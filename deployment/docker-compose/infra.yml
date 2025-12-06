@@ -1,22 +1,16 @@
 version: "3.8"
-name: 'spring-boot-microservices-catalog'
+name: "spring-boot-microservices-catalog"
 
 services:
-  catalog-db:
-    image: postgres:16-alpine
-    container_name: catalog-db
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+  catalog-service:
+    build: .
+    container_name: catalog-service
     ports:
-      - "15432:5432"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "8080:8080"
+    env_file:
+      - ../../.env
     deploy:
       resources:
         limits:
-          memory: 500m
+          memory: 600m
+
