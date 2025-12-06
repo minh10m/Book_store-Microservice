@@ -1,0 +1,14 @@
+name: 'bookstore-microservice'
+services:
+  catalog-service:
+    image: minh1010/bookstore-catalog-service
+    container_name: catalog-service
+    env_file:
+      - ../../.env
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
