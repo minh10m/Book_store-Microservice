@@ -1,0 +1,152 @@
+{
+    "info": {
+        "_postman_id": "b00k570r-3-c011-3c71-0n-v1",
+        "name": "BookStore Microservices",
+        "description": "Collection for Catalog and Order Services",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Catalog Service",
+            "item": [
+                {
+                    "name": "Get Products (Paged)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8081/api/products?page=1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8081",
+                            "path": [
+                                "api",
+                                "products"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number (default 1)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Product By Code",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8081/api/products/:code",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8081",
+                            "path": [
+                                "api",
+                                "products",
+                                ":code"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "code",
+                                    "value": "P100",
+                                    "description": "Product Code"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Order Service",
+            "item": [
+                {
+                    "name": "Create Order",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"items\": [\n        {\n            \"code\": \"P100\",\n            \"name\": \"The Metamorphosis\",\n            \"price\": 25.50,\n            \"quantity\": 1\n        }\n    ],\n    \"customer\": {\n        \"name\": \"Siva\",\n        \"email\": \"siva@gmail.com\",\n        \"phone\": \"999999999\"\n    },\n    \"deliveryAddress\": {\n        \"addressLine1\": \"HNO 123\",\n        \"addressLine2\": \"Kukatpally\",\n        \"city\": \"Hyderabad\",\n        \"state\": \"Telangana\",\n        \"zipCode\": \"500072\",\n        \"country\": \"India\"\n    }\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8082/api/orders",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8082",
+                            "path": [
+                                "api",
+                                "orders"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Orders",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8082/api/orders",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8082",
+                            "path": [
+                                "api",
+                                "orders"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Order By Number",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8082/api/orders/:orderNumber",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8082",
+                            "path": [
+                                "api",
+                                "orders",
+                                ":orderNumber"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "orderNumber",
+                                    "value": "order-123",
+                                    "description": "Order Number"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
