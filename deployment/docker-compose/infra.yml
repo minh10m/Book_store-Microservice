@@ -1,16 +1,21 @@
-version: "3.8"
-name: "spring-boot-microservices-catalog"
-
+name: 'bookstore-microservice'
 services:
-  catalog-service:
-    build: .
-    container_name: catalog-service
+
+  bookstore-rabbitmq:
+    image: rabbitmq:4.0.4-management
+    container_name: bookstore-rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
-      - "8081:8081"
-    env_file:
-      - ../../catalog-service/.env
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 30s
+      timeout: 30s
+      retries: 10
     deploy:
       resources:
         limits:
-          memory: 600m
-
+          memory: 500m
