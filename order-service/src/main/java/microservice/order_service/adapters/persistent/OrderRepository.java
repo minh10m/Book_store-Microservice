@@ -2,7 +2,6 @@ package microservice.order_service.adapters.persistent;
 
 import java.util.List;
 import java.util.Optional;
-
 import microservice.order_service.domain.OrderEntity;
 import microservice.order_service.domain.model.OrderStatus;
 import microservice.order_service.domain.model.OrderSummary;

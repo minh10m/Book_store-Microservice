@@ -1,13 +1,12 @@
 package microservice.order_service.adapters.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import microservice.order_service.domain.model.Address;
-import microservice.order_service.domain.model.Customer;
-import microservice.order_service.domain.model.OrderStatus;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
+import microservice.order_service.domain.model.Address;
+import microservice.order_service.domain.model.Customer;
+import microservice.order_service.domain.model.OrderStatus;
 
 public record OrderDTO(
         String orderNumber,

@@ -1,7 +1,6 @@
 package microservice.order_service.adapters.scheduling;
 
 import java.time.Instant;
-
 import microservice.order_service.application.OrderService;
 import net.javacrumbs.shedlock.core.LockAssert;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;

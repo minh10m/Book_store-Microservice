@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.stream.Stream;
-
 import microservice.order_service.adapters.web.dto.CreateOrderRequest;
 import microservice.order_service.application.OrderService;
 import microservice.order_service.application.SecurityService;
@@ -46,13 +45,13 @@ class OrderControllerUnitTests {
 
     @ParameterizedTest(name = "[{index}]-{0}")
     @MethodSource("createOrderRequestProvider")
-//    @WithMockUser
+    //    @WithMockUser
     void shouldReturnBadRequestWhenOrderPayloadIsInvalid(CreateOrderRequest request) throws Exception {
         given(orderService.createOrder(eq("minh1010"), any(CreateOrderRequest.class)))
                 .willReturn(null);
 
         mockMvc.perform(post("/api/orders")
-//                        .with(csrf())
+                        //                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());

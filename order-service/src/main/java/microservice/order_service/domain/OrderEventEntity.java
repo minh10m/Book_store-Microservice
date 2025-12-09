@@ -9,9 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import microservice.order_service.domain.model.OrderEventType;
-
 import java.time.LocalDateTime;
+import microservice.order_service.domain.model.OrderEventType;
 
 @Entity
 @Table(name = "order_events")

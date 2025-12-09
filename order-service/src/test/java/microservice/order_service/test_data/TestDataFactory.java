@@ -1,11 +1,10 @@
 package microservice.order_service.test_data;
 
+import static org.instancio.Select.field;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-
-import static org.instancio.Select.field;
-
 import microservice.order_service.adapters.web.dto.CreateOrderRequest;
 import microservice.order_service.adapters.web.dto.OrderItem;
 import microservice.order_service.domain.model.Address;

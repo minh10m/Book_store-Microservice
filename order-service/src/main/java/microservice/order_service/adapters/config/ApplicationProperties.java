@@ -2,12 +2,11 @@ package microservice.order_service.adapters.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix= "orders")
+@ConfigurationProperties(prefix = "orders")
 public record ApplicationProperties(
         String catalogServiceUrl,
         String orderEventsExchange,
         String newOrdersQueue,
         String deliveredOrdersQueue,
         String cancelledOrdersQueue,
-        String errorOrdersQueue
-) {}
+        String errorOrdersQueue) {}

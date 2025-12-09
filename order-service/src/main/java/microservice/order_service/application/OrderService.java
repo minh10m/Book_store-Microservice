@@ -2,7 +2,6 @@ package microservice.order_service.application;
 
 import java.util.List;
 import java.util.Optional;
-
 import microservice.order_service.adapters.persistent.OrderRepository;
 import microservice.order_service.adapters.web.dto.CreateOrderRequest;
 import microservice.order_service.adapters.web.dto.CreateOrderResponse;
@@ -26,11 +25,13 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderValidator orderValidator, OrderEventService orderEventService) {
+    public OrderService(
+            OrderRepository orderRepository, OrderValidator orderValidator, OrderEventService orderEventService) {
         this.orderRepository = orderRepository;
         this.orderValidator = orderValidator;
         this.orderEventService = orderEventService;
     }
+
     private final OrderValidator orderValidator;
     private final OrderEventService orderEventService;
 

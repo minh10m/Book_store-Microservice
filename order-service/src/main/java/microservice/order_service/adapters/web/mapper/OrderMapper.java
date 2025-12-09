@@ -1,16 +1,15 @@
 package microservice.order_service.adapters.web.mapper;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import microservice.order_service.adapters.web.dto.CreateOrderRequest;
 import microservice.order_service.adapters.web.dto.OrderDTO;
 import microservice.order_service.adapters.web.dto.OrderItem;
 import microservice.order_service.domain.OrderEntity;
 import microservice.order_service.domain.OrderItemEntity;
 import microservice.order_service.domain.model.OrderStatus;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class OrderMapper {
 
