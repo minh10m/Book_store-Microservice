@@ -27,3 +27,19 @@ services:
       resources:
         limits:
           memory: 700m
+
+  notification-service:
+    image: minh1010/bookstore-notification-service
+    container_name: notification-service
+    env_file:
+      - ../../.env
+    environment:
+      - RABBITMQ_HOST=bookstore-rabbitmq
+      - MAIL_HOST=mailhog
+    ports:
+      - "8083:8083"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
