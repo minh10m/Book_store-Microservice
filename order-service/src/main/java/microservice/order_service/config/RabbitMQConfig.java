@@ -1,4 +1,4 @@
-package microservice.order_service.adapters.config;
+package microservice.order_service.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Binding;

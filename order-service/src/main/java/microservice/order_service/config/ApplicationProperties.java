@@ -1,4 +1,4 @@
-package microservice.order_service.adapters.config;
+package microservice.order_service.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -1,10 +1,10 @@
 package microservice.order_service.application;
 
-import microservice.order_service.adapters.config.ApplicationProperties;
 import microservice.order_service.adapters.web.dto.OrderCancelledEvent;
 import microservice.order_service.adapters.web.dto.OrderCreatedEvent;
 import microservice.order_service.adapters.web.dto.OrderDeliveredEvent;
 import microservice.order_service.adapters.web.dto.OrderErrorEvent;
+import microservice.order_service.config.ApplicationProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package microservice.order_service.clients.catalog;
 
 import java.time.Duration;
-import microservice.order_service.adapters.config.ApplicationProperties;
+import microservice.order_service.config.ApplicationProperties;
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
