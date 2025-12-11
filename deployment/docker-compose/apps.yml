@@ -43,3 +43,16 @@ services:
       resources:
         limits:
           memory: 700m
+
+  api-gateway:
+    image: minh1010/bookstore-api-gateway
+    container_name: api-gateway
+    env_file:
+      - ../../.env
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
