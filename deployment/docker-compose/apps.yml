@@ -1,4 +1,4 @@
-name: 'bookstore-microservice'
+name: 'bookstore-microservice-app'
 services:
   catalog-service:
     image: minh1010/bookstore-catalog-service
