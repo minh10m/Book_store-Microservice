@@ -10,6 +10,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import(TestcontainersConfiguration.class)
 public abstract class AbstractIT {
-        @MockitoBean
-        protected NotificationService notificationService;
+    @MockitoBean
+    protected NotificationService notificationService;
 }
