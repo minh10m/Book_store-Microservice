@@ -31,8 +31,14 @@
 		<spring-cloud.version>2025.0.0</spring-cloud.version>
 		<dockerImageName>minh1010/bookstore-${project.artifactId}</dockerImageName>
 		<spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
+		<springdoc-openapi.version>2.8.0</springdoc-openapi.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
