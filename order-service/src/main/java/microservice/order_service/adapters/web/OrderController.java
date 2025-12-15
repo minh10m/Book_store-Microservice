@@ -1,5 +1,6 @@
 package microservice.order_service.adapters.web;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.util.List;
 import microservice.order_service.adapters.web.dto.CreateOrderRequest;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/orders")
-// @SecurityRequirement(name = "security_auth")
+@SecurityRequirement(name = "security_auth")
 class OrderController {
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
