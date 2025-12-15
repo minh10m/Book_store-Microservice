@@ -125,7 +125,7 @@
 				<configuration>
 					<image>
 						<name>${dockerImageName}</name>
-						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
+						<builder>paketobuildpacks/builder-jammy-java-tiny:latest</builder>
 					</image>
 				</configuration>
 			</plugin>
