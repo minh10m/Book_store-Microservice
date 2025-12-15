@@ -1,0 +1,43 @@
+{
+  "realm": "bookstore",
+  "enabled": true,
+  "users": [
+    {
+      "username": "siva",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Siva",
+      "lastName": "Prasad",
+      "email": "siva@gmail.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "siva1234",
+          "temporary": false
+        }
+      ],
+      "requiredActions": [],
+      "realmRoles": [
+        "ROLE_USER"
+      ],
+      "clientRoles": {
+        "bookstore-webapp": [
+          "ROLE_USER"
+        ]
+      }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "bookstore-webapp",
+      "name": "bookstore-webapp",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "P1sibsIrELBhmvK18BOzw1bUl96DcP2z",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true
+    }
+  ]
+}
