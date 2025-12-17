@@ -101,6 +101,14 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-otel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-exporter-zipkin</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -219,7 +227,7 @@
 				<configuration>
 					<image>
 						<name>${dockerImageName}</name>
-						<builder>paketobuildpacks/builder-jammy-java-tiny:latest</builder>
+						<builder>dashaun/builder:tiny</builder>
 					</image>
 				</configuration>
 				<executions>
