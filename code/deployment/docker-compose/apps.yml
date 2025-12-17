@@ -9,9 +9,9 @@ services:
       - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     env_file:
-      - ../../.env
-    ports:
-      - "8081:8081"
+      - ./docker-compose.env
+    networks:
+      - bookstore-network
     restart: unless-stopped
     deploy:
       resources:
@@ -22,7 +22,7 @@ services:
     image: minh1010/bookstore-order-service
     container_name: order-service
     env_file:
-      - ../../.env
+      - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - ORDERS_CATALOG_SERVICE_URL=http://api-gateway:8989/catalog
@@ -35,6 +35,8 @@ services:
       - RABBITMQ_HOST=bookstore-rabbitmq
     ports:
       - "8082:8082"
+    networks:
+      - bookstore-network
     restart: unless-stopped
     deploy:
       resources:
@@ -45,19 +47,21 @@ services:
     image: minh1010/bookstore-notification-service
     container_name: notification-service
     env_file:
-      - ../../.env
+      - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-        - RABBITMQ_HOST=bookstore-rabbitmq
-        - RABBITMQ_PORT=5672
-        - RABBITMQ_USERNAME=guest
-        - RABBITMQ_PASSWORD=guest
-        - MAIL_HOST=mailhog
-        - MAIL_PORT=1025
-        - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
-        - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
+      - RABBITMQ_HOST=bookstore-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8083:8083"
+    networks:
+      - bookstore-network
     restart: unless-stopped
     deploy:
       resources:
@@ -68,7 +72,7 @@ services:
     image: minh1010/bookstore-api-gateway
     container_name: api-gateway
     env_file:
-      - ../../.env
+      - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - CATALOG_SERVICE_URL=http://catalog-service:8081
@@ -77,6 +81,8 @@ services:
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8989:8989"
+    networks:
+      - bookstore-network
     restart: unless-stopped
     deploy:
       resources:
@@ -84,20 +90,27 @@ services:
           memory: 700m
 
   web--app:
-    image: minh1010/bookstore-webapp
+    image: minh1010/bookstore-web-app
     container_name: web-app
     env_file:
-      - ../../.env
+      - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - BOOKSTORE_API_GATEWAY_URL=http://api-gateway:8989
       - OAUTH2_SERVER_URL=http://keycloak:9191
       - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_BOOKSTORE_WEBAPP_CLIENT_SECRET=${WEBAPP_CLIENT_SECRET}
     ports:
       - "8080:8080"
+    networks:
+      - bookstore-network
     restart: unless-stopped
     deploy:
       resources:
         limits:
           memory: 700m
+
+networks:
+  bookstore-network:
+    external: true
