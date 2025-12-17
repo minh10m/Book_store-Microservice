@@ -18,6 +18,9 @@ The application consists of the following microservices:
 *   **Keycloak**: Identity and Access Management (running on port `9191`).
 *   **MailHog**: Email testing tool (captures emails sent by notification service).
 *   **Prometheus**: Monitoring and alerting toolkit.
+*   **Grafana**: Visualization platform for metrics, logs, and traces.
+*   **Loki**: Log aggregation system.
+*   **Tempo**: Distributed tracing backend.
 *   **Maven**: Build automation tool.
 *   **Task**: Simple build tool/task runner.
 
@@ -91,7 +94,10 @@ docker compose -f code/deployment/docker-compose/infra.yml -f code/deployment/do
 *   **Keycloak**: Port `9191` (Admin: `admin`/`admin1234`)
 *   **RabbitMQ Management**: Port `15672` (User: `guest`/`guest`)
 *   **MailHog**: Port `8025`
-*   **Prometheus**: Port `9090`
+*   **Grafana**: Port `3000` (User: `admin`/`admin123`)
+*   **Prometheus**: Port `9096`
+*   **Loki**: Port `3100`
+*   **Tempo**: Port `3200`
 
 ## 💻 Development
 
