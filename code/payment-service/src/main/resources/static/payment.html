@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Payment Test</title>
+</head>
+<body>
+<h2>Payment (PayPal)</h2>
+
+<div>
+    <label for="amount">Amount (USD):</label>
+    <input id="amount" type="number" min="0.01" step="0.01" />
+</div>
+
+<div>
+    <label for="nameTransactor">Name transactor:</label>
+    <input id="nameTransactor" type="text" />
+</div>
+
+<button id="payBtn" type="button">Pay with PayPal</button>
+<p id="status"></p>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const amountInput = document.getElementById("amount");
+    const nameInput = document.getElementById("nameTransactor");
+    const statusEl = document.getElementById("status");
+
+    amountInput.value = params.get("amount") || "";
+    nameInput.value = params.get("nameTransactor") || "";
+
+    async function createAndRedirectToPayPal() {
+        const amount = Number(amountInput.value);
+        const nameTransactor = nameInput.value.trim();
+
+        if (!amount || amount <= 0) {
+            statusEl.textContent = "Invalid amount";
+            return;
+        }
+        if (!nameTransactor) {
+            statusEl.textContent = "Name transactor is required";
+            return;
+        }
+
+        statusEl.textContent = "Creating PayPal payment...";
+        const response = await fetch("./api/payments/paypal/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount, nameTransactor })
+        });
+
+        if (!response.ok) {
+            statusEl.textContent = "Failed to create payment";
+            return;
+        }
+
+        const data = await response.json();
+        window.location.href = data.approvalUrl;
+    }
+
+    document.getElementById("payBtn").addEventListener("click", createAndRedirectToPayPal);
+
+    // Auto mode for redirect from cart after place order
+    if (params.get("autoPay") === "1" && params.get("amount") && params.get("nameTransactor")) {
+        createAndRedirectToPayPal();
+    }
+</script>
+</body>
+</html>
