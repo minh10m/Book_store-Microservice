@@ -29,23 +29,23 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" href="/orders" th:href="@{/orders}">
-                                Orders
+                                Đơn hàng
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/cart" th:href="@{/cart}">
-                                Cart <span id="cart-item-count">(0)</span>
+                                Giỏ hàng <span id="cart-item-count" sec:authorize="isAuthenticated()">(0)</span>
                             </a>
                         </li>
 
                         <li class="nav-item" sec:authorize="!isAuthenticated()">
                             <a class="nav-link" href="/oauth2/authorization/bookstore-webapp">
-                                Login
+                                Đăng nhập
                             </a>
                         </li>
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a class="nav-link" href="/logout">
-                                Logout
+                                Đăng xuất
                             </a>
                         </li>
 

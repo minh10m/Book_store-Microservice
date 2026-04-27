@@ -7,27 +7,27 @@
 <body>
 <div layout:fragment="content">
     <div th:x-data="|initData('${orderNumber}')|">
-        <h2>Your Order placed successfully</h2>
-        <h4>Order Number: <span x-text="orderDetails.orderNumber">orderNumber</span></h4>
-        <h4>Order Status: <span x-text="orderDetails.status">status</span></h4>
+        <h2>Đơn hàng của bạn đã được đặt thành công</h2>
+        <h4>Mã đơn hàng: <span x-text="orderDetails.orderNumber">orderNumber</span></h4>
+        <h4>Trạng thái: <span x-text="orderDetails.status">status</span></h4>
         <hr/>
         <div class="pb-3">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Sub Total</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Thành tiền</th>
                 </tr>
                 </thead>
                 <tbody>
                 <template x-for="item in orderDetails.items">
                     <tr>
                         <td x-text="item.name">name</td>
-                        <td x-text="item.price">price</td>
+                        <td x-text="new Intl.NumberFormat('vi-VN').format(item.price) + ' VNĐ'">price</td>
                         <td x-text="item.quantity">quantity</td>
-                        <td x-text="item.quantity * item.price">SubTotal</td>
+                        <td x-text="new Intl.NumberFormat('vi-VN').format(item.quantity * item.price) + ' VNĐ'">SubTotal</td>
                     </tr>
                 </template>
                 </tbody>
@@ -35,7 +35,7 @@
                 <tr>
                     <th colspan="3"></th>
                     <th colspan="1" style="text-align: left">
-                        Total Amount: <span x-text="orderDetails.totalAmount">totalAmount</span>
+                        Tổng tiền: <span x-text="new Intl.NumberFormat('vi-VN').format(orderDetails.totalAmount) + ' VNĐ'">totalAmount</span>
                     </th>
                 </tr>
                 </tfoot>
@@ -43,7 +43,7 @@
 
             <form class="row g-3" method="post">
                 <div class="col-md-6">
-                    <label for="customerName" class="form-label">Customer Name</label>
+                    <label for="customerName" class="form-label">Họ tên khách hàng</label>
                     <input type="text" class="form-control"
                            id="customerName"
                            name="customerName"
@@ -52,7 +52,7 @@
                     />
                 </div>
                 <div class="col-md-6">
-                    <label for="customerEmail" class="form-label">Customer Email</label>
+                    <label for="customerEmail" class="form-label">Email</label>
                     <input type="email" class="form-control"
                            id="customerEmail"
                            name="customerEmail"
@@ -60,7 +60,7 @@
                            x-model="orderDetails.customer.email">
                 </div>
                 <div class="col-6">
-                    <label for="deliveryAddressLine1" class="form-label">Delivery Address Line 1</label>
+                    <label for="deliveryAddressLine1" class="form-label">Địa chỉ giao hàng 1</label>
                     <input class="form-control"
                            id="deliveryAddressLine1"
                            name="deliveryAddressLine1"
@@ -68,7 +68,7 @@
                            x-model="orderDetails.deliveryAddress.addressLine1"/>
                 </div>
                 <div class="col-6">
-                    <label for="deliveryAddressLine2" class="form-label">Delivery Address Line 2</label>
+                    <label for="deliveryAddressLine2" class="form-label">Địa chỉ giao hàng 2</label>
                     <input class="form-control"
                            id="deliveryAddressLine2"
                            name="deliveryAddressLine2"
@@ -76,7 +76,7 @@
                            x-model="orderDetails.deliveryAddress.addressLine2"/>
                 </div>
                 <div class="col-6">
-                    <label for="deliveryAddressCity" class="form-label">Delivery Address City</label>
+                    <label for="deliveryAddressCity" class="form-label">Thành phố</label>
                     <input class="form-control"
                            id="deliveryAddressCity"
                            name="deliveryAddressCity"
@@ -84,7 +84,7 @@
                            x-model="orderDetails.deliveryAddress.city"/>
                 </div>
                 <div class="col-6">
-                    <label for="deliveryAddressState" class="form-label">Delivery Address State</label>
+                    <label for="deliveryAddressState" class="form-label">Tỉnh / Bang</label>
                     <input class="form-control"
                            id="deliveryAddressState"
                            name="deliveryAddressState"
@@ -92,7 +92,7 @@
                            x-model="orderDetails.deliveryAddress.state"/>
                 </div>
                 <div class="col-6">
-                    <label for="deliveryAddressZipCode" class="form-label">Delivery Address ZipCode</label>
+                    <label for="deliveryAddressZipCode" class="form-label">Mã Zip</label>
                     <input class="form-control"
                            id="deliveryAddressZipCode"
                            name="deliveryAddressZipCode"
@@ -100,7 +100,7 @@
                            x-model="orderDetails.deliveryAddress.zipCode"/>
                 </div>
                 <div class="col-6">
-                    <label for="deliveryAddressCountry" class="form-label">Delivery Address Country</label>
+                    <label for="deliveryAddressCountry" class="form-label">Quốc gia</label>
                     <input class="form-control"
                            id="deliveryAddressCountry"
                            name="deliveryAddressCountry"

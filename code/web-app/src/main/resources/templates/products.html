@@ -23,16 +23,16 @@
                                 data-toggle="tooltip"
                                 data-placement="top"
                                 x-text="product.name">product.name</h5>
-                            <p class="card-text"
-                               data-toggle="tooltip"
-                               data-placement="top"
-                               x-text="'Price: $'+product.price"
-                            >product.price</p>
+                             <p class="card-text"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                x-text="'Giá: ' + new Intl.NumberFormat('vi-VN').format(product.price) + ' VNĐ'"
+                             >product.price</p>
                         </div>
                         <div class="card-footer" style="background: transparent; border-top: 0;">
                             <div class="d-grid gap-2">
                                 <button class="btn btn-primary" @click="addToCart(product)">
-                                    Add to Cart
+                                    Thêm vào giỏ
                                 </button>
                             </div>
                         </div>
