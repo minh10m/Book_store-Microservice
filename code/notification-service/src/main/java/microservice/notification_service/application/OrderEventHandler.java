@@ -43,8 +43,8 @@ public class OrderEventHandler {
             log.warn("Received duplicate OrderDeliveredEvent with eventId: {}", event.eventId());
             return;
         }
-        log.info("Received a OrderDeliveredEvent with orderNumber:{}: ", event.orderNumber());
-        notificationService.sendOrderDeliveredNotification(event);
+        log.info("Received a OrderPaidEvent with orderNumber:{}: ", event.orderNumber());
+        notificationService.sendOrderPaidNotification(event);
         var orderEvent = new OrderEventEntity(event.eventId());
         orderEventRepository.save(orderEvent);
     }

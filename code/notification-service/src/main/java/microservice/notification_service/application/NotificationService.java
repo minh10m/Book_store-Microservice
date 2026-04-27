@@ -28,74 +28,74 @@ public class NotificationService {
         String message =
                 """
                 ===================================================
-                Order Created Notification
+                Thông báo: Đặt hàng thành công
                 ----------------------------------------------------
-                Dear %s,
-                Your order with orderNumber: %s has been created successfully.
+                Chào %s,
+                Đơn hàng của bạn với mã số: %s đã được khởi tạo thành công.
+                Chúng tôi sẽ sớm xử lý và thông báo cho bạn khi có cập nhật mới.
 
-                Thanks,
-                BookStore Team
+                Cảm ơn bạn đã tin tưởng BookStore!
                 ===================================================
                 """
                         .formatted(event.customer().name(), event.orderNumber());
         log.info("\n{}", message);
-        sendEmail(event.customer().email(), "Order Created Notification", message);
+        sendEmail(event.customer().email(), "Xác nhận đặt hàng thành công - BookStore", message);
     }
 
-    public void sendOrderDeliveredNotification(OrderDeliveredEvent event) {
+    public void sendOrderPaidNotification(OrderDeliveredEvent event) {
         String message =
                 """
                 ===================================================
-                Order Delivered Notification
+                Thông báo: Thanh toán thành công
                 ----------------------------------------------------
-                Dear %s,
-                Your order with orderNumber: %s has been delivered successfully.
+                Chào %s,
+                Đơn hàng mã số: %s của bạn đã được thanh toán thành công.
+                Thời gian thanh toán: %s
 
-                Thanks,
-                BookStore Team
+                Đơn hàng của bạn hiện đang được chuẩn bị để giao.
+                Cảm ơn bạn đã mua sắm tại BookStore!
                 ===================================================
                 """
-                        .formatted(event.customer().name(), event.orderNumber());
+                        .formatted(event.customer().name(), event.orderNumber(), event.createdAt());
         log.info("\n{}", message);
-        sendEmail(event.customer().email(), "Order Delivered Notification", message);
+        sendEmail(event.customer().email(), "Thông báo thanh toán thành công - BookStore", message);
     }
 
     public void sendOrderCancelledNotification(OrderCancelledEvent event) {
         String message =
                 """
                 ===================================================
-                Order Cancelled Notification
+                Thông báo: Hủy đơn hàng
                 ----------------------------------------------------
-                Dear %s,
-                Your order with orderNumber: %s has been cancelled.
-                Reason: %s
+                Chào %s,
+                Đơn hàng mã số: %s của bạn đã bị hủy.
+                Lý do: %s
 
-                Thanks,
-                BookStore Team
+                Nếu đây là một sự nhầm lẫn, vui lòng liên hệ với bộ phận hỗ trợ của chúng tôi.
+                BookStore xin lỗi vì sự bất tiện này.
                 ===================================================
                 """
                         .formatted(event.customer().name(), event.orderNumber(), event.reason());
         log.info("\n{}", message);
-        sendEmail(event.customer().email(), "Order Cancelled Notification", message);
+        sendEmail(event.customer().email(), "Thông báo hủy đơn hàng - BookStore", message);
     }
 
     public void sendOrderErrorEventNotification(OrderErrorEvent event) {
         String message =
                 """
                 ===================================================
-                Order Processing Failure Notification
+                CẢNH BÁO: Lỗi xử lý đơn hàng (Hệ thống)
                 ----------------------------------------------------
-                Hi %s,
-                The order processing failed for orderNumber: %s.
-                Reason: %s
+                Chào Quản trị viên (%s),
+                Hệ thống gặp lỗi khi xử lý đơn hàng số: %s.
+                Nội dung lỗi: %s
 
-                Thanks,
-                BookStore Team
+                Vui lòng kiểm tra hệ thống ngay lập tức.
                 ===================================================
                 """
                         .formatted(properties.supportEmail(), event.orderNumber(), event.reason());
         log.info("\n{}", message);
-        sendEmail(properties.supportEmail(), "Order Processing Failure Notification", message);
+        sendEmail(properties.supportEmail(), "CẢNH BÁO LỖI HỆ THỐNG - BookStore", message);
     }
 
     private void sendEmail(String recipient, String subject, String content) {
@@ -109,7 +109,7 @@ public class NotificationService {
             emailSender.send(mimeMessage);
             log.info("Email sent to: {}", recipient);
         } catch (Exception e) {
-            throw new RuntimeException("Error while sending email", e);
+            log.error("Error while sending email to {}: {}", recipient, e.getMessage());
         }
     }
 }
