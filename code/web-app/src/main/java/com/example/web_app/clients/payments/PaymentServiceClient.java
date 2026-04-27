@@ -9,5 +9,6 @@ public interface PaymentServiceClient {
     CreatePaymentResponse createPayment(@RequestBody CreatePaymentRequest request);
 
     record CreatePaymentRequest(BigDecimal amount, String nameTransactor, String orderNumber) {}
+
     record CreatePaymentResponse(String approvalUrl) {}
 }

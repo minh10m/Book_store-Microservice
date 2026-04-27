@@ -6,8 +6,6 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SWAGGER_API_GATEWAY_URL=http://api-gateway:8989/catalog
-      - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
-      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     env_file:
       - ./docker-compose.env
     networks:
@@ -25,14 +23,7 @@ services:
       - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - ORDERS_CATALOG_SERVICE_URL=http://api-gateway:8989/catalog
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-      - OAUTH2_SERVER_URL=http://keycloak:9191
       - SWAGGER_API_GATEWAY_URL=http://api-gateway:8989/orders
-      - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
-      - RABBITMQ_HOST=bookstore-rabbitmq
     ports:
       - "8082:8082"
     networks:
@@ -42,6 +33,7 @@ services:
       resources:
         limits:
           memory: 1024m
+
   payment-service:
     image: minh1010/bookstore-payment-service
     container_name: payment-service
@@ -50,8 +42,6 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SWAGGER_API_GATEWAY_URL=http://api-gateway:8989/payments
-      - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
-      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8084:8084"
     networks:
@@ -61,6 +51,7 @@ services:
       resources:
         limits:
           memory: 700m
+
   notification-service:
     image: minh1010/bookstore-notification-service
     container_name: notification-service
@@ -68,12 +59,6 @@ services:
       - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - RABBITMQ_HOST=bookstore-rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-      - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
-      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8083:8083"
     networks:
@@ -91,11 +76,6 @@ services:
       - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - CATALOG_SERVICE_URL=http://catalog-service:8081
-      - ORDER_SERVICE_URL=http://order-service:8082
-      - PAYMENT_SERVICE_URL=http://payment-service:8084
-      - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
-      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8989:8989"
     networks:
@@ -106,17 +86,13 @@ services:
         limits:
           memory: 700m
 
-  web--app:
+  web-app:
     image: minh1010/bookstore-web-app
     container_name: web-app
     env_file:
       - ./docker-compose.env
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - BOOKSTORE_API_GATEWAY_URL=http://api-gateway:8989
-      - OAUTH2_SERVER_URL=http://keycloak:9191
-      - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
-      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8080:8080"
     networks:

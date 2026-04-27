@@ -30,16 +30,19 @@ public class PaymentController {
     @GetMapping("/orders/{orderNumber}/payment")
     public String paymentPage(@PathVariable String orderNumber, Model model, @AuthenticationPrincipal OidcUser user) {
         log.info("Fetching order details for payment: {}", orderNumber);
-        OrderDTO order = orderServiceClient.getOrder(Map.of("Authorization", "Bearer " + user.getIdToken().getTokenValue()), orderNumber);
+        OrderDTO order = orderServiceClient.getOrder(
+                Map.of("Authorization", "Bearer " + user.getIdToken().getTokenValue()), orderNumber);
         model.addAttribute("order", order);
         return "payment";
     }
 
     @PostMapping("/api/payments/paypal/create")
     @ResponseBody
-    public PaymentServiceClient.CreatePaymentResponse createPayment(@RequestBody PaymentServiceClient.CreatePaymentRequest request) {
+    public PaymentServiceClient.CreatePaymentResponse createPayment(
+            @RequestBody PaymentServiceClient.CreatePaymentRequest request) {
         try {
-            log.info("Proxying payment creation for order: {} with amount: {}", request.orderNumber(), request.amount());
+            log.info(
+                    "Proxying payment creation for order: {} with amount: {}", request.orderNumber(), request.amount());
             return paymentServiceClient.createPayment(request);
         } catch (Exception e) {
             log.error("Failed to proxy payment creation: {}", e.getMessage(), e);

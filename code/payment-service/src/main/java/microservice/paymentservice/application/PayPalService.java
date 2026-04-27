@@ -34,7 +34,8 @@ public class PayPalService {
     @Value("${bookstore.order-service-url}")
     private String orderServiceUrl;
 
-    public PayPalService(APIContext apiContext, PaymentTransactionRepository paymentTransactionRepository, RestClient restClient) {
+    public PayPalService(
+            APIContext apiContext, PaymentTransactionRepository paymentTransactionRepository, RestClient restClient) {
         this.apiContext = apiContext;
         this.paymentTransactionRepository = paymentTransactionRepository;
         this.restClient = restClient;
@@ -59,8 +60,12 @@ public class PayPalService {
         try {
             createdPayment = payment.create(apiContext);
         } catch (PayPalRESTException e) {
-            log.error("PayPal API Error: Status Code: {}, Message: {}, Details: {}", 
-                e.getResponsecode(), e.getMessage(), e.getDetails(), e);
+            log.error(
+                    "PayPal API Error: Status Code: {}, Message: {}, Details: {}",
+                    e.getResponsecode(),
+                    e.getMessage(),
+                    e.getDetails(),
+                    e);
             throw e;
         }
         transaction.setPayPalPaymentId(createdPayment.getId());
@@ -100,7 +105,8 @@ public class PayPalService {
     private void notifyOrderService(String orderNumber) {
         try {
             log.info("Notifying order-service for orderNumber: {}", orderNumber);
-            restClient.put()
+            restClient
+                    .put()
                     .uri(orderServiceUrl + "/api/orders/" + orderNumber + "/delivered")
                     .retrieve()
                     .toBodilessEntity();
@@ -121,7 +127,7 @@ public class PayPalService {
         // Convert VND to USD (PayPal doesn't support VND natively)
         BigDecimal rate = new BigDecimal("25000");
         BigDecimal totalUsd = totalVnd.divide(rate, 2, java.math.RoundingMode.HALF_UP);
-        
+
         log.info("Converting {} VND to {} USD for PayPal payment", totalVnd, totalUsd);
 
         Amount amount = new Amount();
