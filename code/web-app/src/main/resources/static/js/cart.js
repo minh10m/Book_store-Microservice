@@ -49,7 +49,7 @@ document.addEventListener('alpine:init', () => {
                     const nameTranscator = order.customer.name;
                     this.removeCart();
                     //alert("Order placed successfully")
-                    window.location = `${apiGatewayUrl}/payments/payment.html?amount=${encodeURIComponent(amount)}&nameTransactor=${encodeURIComponent(nameTransactor)}&autoPay=1`;
+                    window.location = `/orders/${resp.orderNumber}/payment`;
                 }, error: (err) => {
                     console.log("Order Creation Error:", err)
                     alert("Order creation failed")

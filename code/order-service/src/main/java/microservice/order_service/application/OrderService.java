@@ -88,4 +88,14 @@ public class OrderService {
         return DELIVERY_ALLOWED_COUNTRIES.contains(
                 order.getDeliveryAddress().country().toUpperCase());
     }
+
+    public void markOrderAsDelivered(String orderNumber) {
+        OrderEntity order = orderRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new RuntimeException("Order not found: " + orderNumber));
+        if (order.getStatus() != OrderStatus.DELIVERED) {
+            orderRepository.updateOrderStatus(orderNumber, OrderStatus.DELIVERED);
+            orderEventService.save(OrderEventMapper.buildOrderDeliveredEvent(order));
+            log.info("Order {} marked as DELIVERED after payment", orderNumber);
+        }
+    }
 }

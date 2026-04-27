@@ -13,20 +13,31 @@ import microservice.paymentservice.adapters.web.dto.CreatePaymentRequest;
 import microservice.paymentservice.adapters.web.dto.CreatePaymentResponse;
 import microservice.paymentservice.domain.model.PaymentStatus;
 import microservice.paymentservice.domain.model.PaymentTransactionEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 @Service
 @Transactional
 public class PayPalService {
+    private static final Logger log = LoggerFactory.getLogger(PayPalService.class);
+
     @Autowired
     private APIContext apiContext;
 
     private final PaymentTransactionRepository paymentTransactionRepository;
+    private final RestClient restClient;
 
-    public PayPalService(APIContext apiContext, PaymentTransactionRepository paymentTransactionRepository) {
+    @Value("${bookstore.order-service-url}")
+    private String orderServiceUrl;
+
+    public PayPalService(APIContext apiContext, PaymentTransactionRepository paymentTransactionRepository, RestClient restClient) {
         this.apiContext = apiContext;
         this.paymentTransactionRepository = paymentTransactionRepository;
+        this.restClient = restClient;
     }
 
     public CreatePaymentResponse createPayment(
@@ -37,13 +48,21 @@ public class PayPalService {
         transaction.setStatus(PaymentStatus.PENDING);
         transaction.setAmount(request.amount());
         transaction.setNameTransactor(request.nameTransactor());
+        transaction.setOrderNumber(request.orderNumber());
         transaction = paymentTransactionRepository.save(transaction);
 
         String successUrl = successBaseUrl + "?transactionID=" + transaction.getTransactionID();
         String cancelUrl = cancelBaseUrl + "?transactionID=" + transaction.getTransactionID();
 
         Payment payment = buildPayment(request.amount(), cancelUrl, successUrl);
-        Payment createdPayment = payment.create(apiContext);
+        Payment createdPayment;
+        try {
+            createdPayment = payment.create(apiContext);
+        } catch (PayPalRESTException e) {
+            log.error("PayPal API Error: Status Code: {}, Message: {}, Details: {}", 
+                e.getResponsecode(), e.getMessage(), e.getDetails(), e);
+            throw e;
+        }
         transaction.setPayPalPaymentId(createdPayment.getId());
         paymentTransactionRepository.save(transaction);
 
@@ -70,10 +89,25 @@ public class PayPalService {
         Payment executed = payment.execute(apiContext, paymentExecution);
         if ("approved".equalsIgnoreCase(executed.getState())) {
             transaction.setStatus(PaymentStatus.SUCCESS);
+            paymentTransactionRepository.save(transaction);
+            notifyOrderService(transaction.getOrderNumber());
         } else {
             transaction.setStatus(PaymentStatus.FAILED);
+            paymentTransactionRepository.save(transaction);
         }
-        paymentTransactionRepository.save(transaction);
+    }
+
+    private void notifyOrderService(String orderNumber) {
+        try {
+            log.info("Notifying order-service for orderNumber: {}", orderNumber);
+            restClient.put()
+                    .uri(orderServiceUrl + "/api/orders/" + orderNumber + "/delivered")
+                    .retrieve()
+                    .toBodilessEntity();
+            log.info("Successfully notified order-service for orderNumber: {}", orderNumber);
+        } catch (Exception e) {
+            log.error("Failed to notify order-service for orderNumber: {}", orderNumber, e);
+        }
     }
 
     public void handleCancel(String transactionID) {
@@ -83,10 +117,16 @@ public class PayPalService {
         paymentTransactionRepository.save(transaction);
     }
 
-    private Payment buildPayment(BigDecimal total, String cancelUrl, String successUrl) {
+    private Payment buildPayment(BigDecimal totalVnd, String cancelUrl, String successUrl) {
+        // Convert VND to USD (PayPal doesn't support VND natively)
+        BigDecimal rate = new BigDecimal("25000");
+        BigDecimal totalUsd = totalVnd.divide(rate, 2, java.math.RoundingMode.HALF_UP);
+        
+        log.info("Converting {} VND to {} USD for PayPal payment", totalVnd, totalUsd);
+
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(String.format("%.2f", total));
+        amount.setTotal(String.format("%.2f", totalUsd));
 
         Transaction transaction = new Transaction();
         transaction.setDescription("BookStore Payment");

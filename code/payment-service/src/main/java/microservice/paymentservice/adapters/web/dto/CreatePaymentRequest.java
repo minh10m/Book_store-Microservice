@@ -6,4 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record CreatePaymentRequest(
-        @NotNull @DecimalMin(value = "0.01") BigDecimal amount, @NotBlank String nameTransactor) {}
+        @NotNull @DecimalMin(value = "0.01") BigDecimal amount,
+        @NotBlank String nameTransactor,
+        @NotBlank String orderNumber) {}

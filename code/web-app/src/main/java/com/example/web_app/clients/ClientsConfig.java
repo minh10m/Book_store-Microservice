@@ -2,6 +2,7 @@ package com.example.web_app.clients;
 
 import com.example.web_app.clients.catalog.CatalogServiceClient;
 import com.example.web_app.clients.orders.OrderServiceClient;
+import com.example.web_app.clients.payments.PaymentServiceClient;
 import com.example.web_app.config.ApplicationProperties;
 import java.time.Duration;
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
@@ -46,5 +47,13 @@ class ClientsConfig {
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
                 .build();
         return factory.createClient(OrderServiceClient.class);
+    }
+
+    @Bean
+    PaymentServiceClient paymentServiceClient(RestClient.Builder builder) {
+        RestClient restClient = builder.build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
+                .build();
+        return factory.createClient(PaymentServiceClient.class);
     }
 }

@@ -31,6 +31,9 @@ public class PaymentTransactionEntity {
     @Column(name = "paypal_payment_id")
     private String payPalPaymentId;
 
+    @Column(name = "order_number")
+    private String orderNumber;
+
     public Long getId() {
         return id;
     }
@@ -77,5 +80,13 @@ public class PaymentTransactionEntity {
 
     public void setPayPalPaymentId(String payPalPaymentId) {
         this.payPalPaymentId = payPalPaymentId;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }
