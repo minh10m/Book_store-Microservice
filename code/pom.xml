@@ -23,6 +23,7 @@
         <module>notification-service</module>
         <module>api-gateway</module>
         <module>web-app</module>
+        <module>payment-service</module>
     </modules>
 
     <build>
