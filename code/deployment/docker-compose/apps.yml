@@ -1,6 +1,7 @@
 name: 'bookstore-microservice-app'
 services:
   catalog-service:
+    build: ../../catalog-service
     image: minh1010/bookstore-catalog-service
     container_name: catalog-service
     environment:
@@ -17,6 +18,7 @@ services:
           memory: 700m
 
   order-service:
+    build: ../../order-service
     image: minh1010/bookstore-order-service
     container_name: order-service
     env_file:
@@ -35,6 +37,7 @@ services:
           memory: 1024m
 
   payment-service:
+    build: ../../payment-service
     image: minh1010/bookstore-payment-service
     container_name: payment-service
     env_file:
@@ -53,6 +56,7 @@ services:
           memory: 700m
 
   notification-service:
+    build: ../../notification-service
     image: minh1010/bookstore-notification-service
     container_name: notification-service
     env_file:
@@ -70,6 +74,7 @@ services:
           memory: 700m
 
   api-gateway:
+    build: ../../api-gateway
     image: minh1010/bookstore-api-gateway
     container_name: api-gateway
     env_file:
@@ -87,6 +92,7 @@ services:
           memory: 700m
 
   web-app:
+    build: ../../web-app
     image: minh1010/bookstore-web-app
     container_name: web-app
     env_file:

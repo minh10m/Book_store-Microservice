@@ -19,8 +19,18 @@ class OrderEventMapper {
                 LocalDateTime.now());
     }
 
-    static OrderDeliveredEvent buildOrderDeliveredEvent(OrderEntity order) {
-        return new OrderDeliveredEvent(
+    static OrderPaidEvent buildOrderPaidEvent(OrderEntity order) {
+        return new OrderPaidEvent(
+                UUID.randomUUID().toString(),
+                order.getOrderNumber(),
+                getOrderItems(order),
+                order.getCustomer(),
+                order.getDeliveryAddress(),
+                LocalDateTime.now());
+    }
+
+    static OrderInProcessEvent buildOrderInProcessEvent(OrderEntity order) {
+        return new OrderInProcessEvent(
                 UUID.randomUUID().toString(),
                 order.getOrderNumber(),
                 getOrderItems(order),

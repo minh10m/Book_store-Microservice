@@ -4,98 +4,52 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Complete Your Payment</title>
-    <style>
-        .payment-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px;
-            max-width: 600px;
-            margin: 40px auto;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .order-summary {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 24px 0;
-        }
-        .paypal-btn {
-            background: #ffc439;
-            color: #003087;
-            font-weight: 700;
-            border-radius: 50px;
-            padding: 16px 32px;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-size: 1.1rem;
-        }
-        .paypal-btn:hover {
-            background: #f2ba36;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 196, 57, 0.2);
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 99px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
+    <title>Thanh toán đơn hàng</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="container py-5">
-        <div class="payment-card text-center" x-data="paymentHandler()">
-            <h1 class="mb-4 gradient-text display-5 fw-bold">Thanh toán an toàn</h1>
-            <p class="text-secondary">Vui lòng hoàn tất thanh toán để hoàn tất đơn hàng của bạn.</p>
+    <div class="container py-5 animate-fade-in">
+        <div class="card p-5 text-center mx-auto shadow-lg" style="max-width: 600px;">
+            <h1 class="mb-4 fw-bold display-6" style="background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Thanh toán an toàn
+            </h1>
+            <p class="text-secondary mb-5">Vui lòng hoàn tất thanh toán để chúng tôi có thể xử lý đơn hàng của bạn ngay lập tức.</p>
 
-            <div class="order-summary text-start">
-                <div class="d-flex justify-content-between mb-2">
+            <div class="card p-4 mb-5 text-start border-0" style="background: rgba(255, 255, 255, 0.03);" x-data="paymentHandler()">
+                <div class="d-flex justify-content-between mb-3 border-bottom border-white border-opacity-10 pb-2">
                     <span class="text-secondary">Mã đơn hàng:</span>
-                    <span class="fw-bold" th:text="${order.orderNumber}">#ORD-123</span>
+                    <span class="fw-bold text-primary" th:text="${order.orderNumber}">#ORD-123</span>
                 </div>
-                <div class="d-flex justify-content-between mb-2">
+                <div class="d-flex justify-content-between mb-3 border-bottom border-white border-opacity-10 pb-2">
                     <span class="text-secondary">Khách hàng:</span>
-                    <span th:text="${order.customer.name}">John Doe</span>
+                    <span class="fw-medium text-light" th:text="${order.customer.name}">John Doe</span>
                 </div>
-                <hr style="opacity: 0.1">
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="h5 mb-0">Tổng tiền</span>
-                    <span class="h3 mb-0 gradient-text">
-                        <span th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'POINT', 0, 'COMMA')}">0</span> VNĐ
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <span class="h5 mb-0 fw-bold text-secondary">Tổng cộng:</span>
+                    <span class="h3 mb-0 fw-bold text-primary">
+                        <span th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'POINT', 0, 'COMMA')}">0</span> đ
                     </span>
                 </div>
             </div>
 
-            <div class="mt-5">
+            <div class="mt-2" x-data="paymentHandler()">
                 <button @click="payWithPayPal()" 
-                        class="paypal-btn" 
+                        class="btn btn-primary w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-3" 
+                        style="background: #ffc439; color: #003087; font-size: 1.2rem; border: none;"
                         id="pay-button"
                         :disabled="loading">
-                    <span x-show="!loading">Thanh toán với <b>PayPal</b></span>
+                    <template x-if="!loading">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-paypal"></i>
+                            <span>Thanh toán với <b>PayPal</b></span>
+                        </div>
+                    </template>
                     <span x-show="loading" class="spinner-border spinner-border-sm"></span>
                 </button>
             </div>
 
-            <p class="mt-4 text-secondary small">
-                <i class="bi bi-shield-lock me-1"></i> Giao dịch của bạn được mã hóa và bảo mật.
+            <p class="mt-5 text-secondary small">
+                <i class="bi bi-shield-lock-fill me-1 text-success"></i> Giao dịch được mã hóa SSL 256-bit bảo mật tuyệt đối.
             </p>
             
             <div id="error-message" class="alert alert-danger mt-3" style="display: none"></div>
@@ -132,7 +86,7 @@
                     } catch (error) {
                         console.error(error);
                         const errEl = document.getElementById('error-message');
-                        errEl.textContent = 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                        errEl.textContent = 'Đã có lỗi xảy ra. Vui lòng thử lại sau.';
                         errEl.style.display = 'block';
                         this.loading = false;
                     }

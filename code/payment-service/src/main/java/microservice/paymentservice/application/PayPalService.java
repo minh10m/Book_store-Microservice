@@ -107,7 +107,7 @@ public class PayPalService {
             log.info("Notifying order-service for orderNumber: {}", orderNumber);
             restClient
                     .put()
-                    .uri(orderServiceUrl + "/api/orders/" + orderNumber + "/delivered")
+                    .uri(orderServiceUrl + "/api/orders/" + orderNumber + "/paid")
                     .retrieve()
                     .toBodilessEntity();
             log.info("Successfully notified order-service for orderNumber: {}", orderNumber);

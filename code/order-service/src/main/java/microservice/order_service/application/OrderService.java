@@ -6,6 +6,8 @@ import microservice.order_service.adapters.persistent.OrderRepository;
 import microservice.order_service.adapters.web.dto.CreateOrderRequest;
 import microservice.order_service.adapters.web.dto.CreateOrderResponse;
 import microservice.order_service.adapters.web.dto.OrderCreatedEvent;
+import microservice.order_service.adapters.web.dto.OrderPaidEvent;
+import microservice.order_service.adapters.web.dto.OrderInProcessEvent;
 import microservice.order_service.adapters.web.dto.OrderDTO;
 import microservice.order_service.adapters.web.mapper.OrderMapper;
 import microservice.order_service.domain.OrderEntity;
@@ -68,8 +70,8 @@ public class OrderService {
         try {
             if (canBeDelivered(order)) {
                 log.info("OrderNumber: {} can be delivered", order.getOrderNumber());
-                orderRepository.updateOrderStatus(order.getOrderNumber(), OrderStatus.DELIVERED);
-                orderEventService.save(OrderEventMapper.buildOrderDeliveredEvent(order));
+                orderRepository.updateOrderStatus(order.getOrderNumber(), OrderStatus.IN_PROCESS);
+                orderEventService.save(OrderEventMapper.buildOrderInProcessEvent(order));
 
             } else {
                 log.info("OrderNumber: {} can not be delivered", order.getOrderNumber());
@@ -89,14 +91,14 @@ public class OrderService {
                 order.getDeliveryAddress().country().toUpperCase());
     }
 
-    public void markOrderAsDelivered(String orderNumber) {
+    public void markOrderAsPaid(String orderNumber) {
         OrderEntity order = orderRepository
                 .findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new RuntimeException("Order not found: " + orderNumber));
-        if (order.getStatus() != OrderStatus.DELIVERED) {
-            orderRepository.updateOrderStatus(orderNumber, OrderStatus.DELIVERED);
-            orderEventService.save(OrderEventMapper.buildOrderDeliveredEvent(order));
-            log.info("Order {} marked as DELIVERED after payment", orderNumber);
+        if (order.getStatus() != OrderStatus.PAID) {
+            orderRepository.updateOrderStatus(orderNumber, OrderStatus.PAID);
+            orderEventService.save(OrderEventMapper.buildOrderPaidEvent(order));
+            log.info("Order {} marked as PAID after payment", orderNumber);
         }
     }
 }
