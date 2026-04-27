@@ -41,7 +41,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 700m
+          memory: 1024m
   payment-service:
     image: minh1010/bookstore-payment-service
     container_name: payment-service
@@ -72,8 +72,6 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
-      - MAIL_HOST=mailhog
-      - MAIL_PORT=1025
       - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
