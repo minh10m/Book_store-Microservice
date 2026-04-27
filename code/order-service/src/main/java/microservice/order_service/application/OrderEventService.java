@@ -6,7 +6,8 @@ import java.util.List;
 import microservice.order_service.adapters.persistent.OrderEventRepository;
 import microservice.order_service.adapters.web.dto.OrderCancelledEvent;
 import microservice.order_service.adapters.web.dto.OrderCreatedEvent;
-import microservice.order_service.adapters.web.dto.OrderDeliveredEvent;
+import microservice.order_service.adapters.web.dto.OrderPaidEvent;
+import microservice.order_service.adapters.web.dto.OrderInProcessEvent;
 import microservice.order_service.adapters.web.dto.OrderErrorEvent;
 import microservice.order_service.domain.OrderEventEntity;
 import microservice.order_service.domain.model.OrderEventType;
@@ -44,10 +45,20 @@ public class OrderEventService {
         this.orderEventRepository.save(orderEvent);
     }
 
-    void save(OrderDeliveredEvent event) {
+    void save(OrderPaidEvent event) {
         OrderEventEntity orderEvent = new OrderEventEntity();
         orderEvent.setEventId(event.eventId());
-        orderEvent.setEventType(OrderEventType.ORDER_DELIVERED);
+        orderEvent.setEventType(OrderEventType.ORDER_PAID);
+        orderEvent.setOrderNumber(event.orderNumber());
+        orderEvent.setCreatedAt(event.createdAt());
+        orderEvent.setPayload(toJsonPayload(event));
+        this.orderEventRepository.save(orderEvent);
+    }
+
+    void save(OrderInProcessEvent event) {
+        OrderEventEntity orderEvent = new OrderEventEntity();
+        orderEvent.setEventId(event.eventId());
+        orderEvent.setEventType(OrderEventType.ORDER_IN_PROCESS);
         orderEvent.setOrderNumber(event.orderNumber());
         orderEvent.setCreatedAt(event.createdAt());
         orderEvent.setPayload(toJsonPayload(event));
@@ -91,15 +102,20 @@ public class OrderEventService {
                 OrderCreatedEvent orderCreatedEvent = fromJsonPayload(event.getPayload(), OrderCreatedEvent.class);
                 orderEventPublisher.publish(orderCreatedEvent);
                 break;
-            case ORDER_DELIVERED:
-                OrderDeliveredEvent orderDeliveredEvent =
-                        fromJsonPayload(event.getPayload(), OrderDeliveredEvent.class);
-                orderEventPublisher.publish(orderDeliveredEvent);
+            case ORDER_PAID:
+                OrderPaidEvent orderPaidEvent =
+                        fromJsonPayload(event.getPayload(), OrderPaidEvent.class);
+                orderEventPublisher.publish(orderPaidEvent);
                 break;
             case ORDER_CANCELLED:
                 OrderCancelledEvent orderCancelledEvent =
                         fromJsonPayload(event.getPayload(), OrderCancelledEvent.class);
                 orderEventPublisher.publish(orderCancelledEvent);
+                break;
+            case ORDER_IN_PROCESS:
+                OrderInProcessEvent orderInProcessEvent =
+                        fromJsonPayload(event.getPayload(), OrderInProcessEvent.class);
+                orderEventPublisher.publish(orderInProcessEvent);
                 break;
             case ORDER_PROCESSING_FAILED:
                 OrderErrorEvent orderErrorEvent = fromJsonPayload(event.getPayload(), OrderErrorEvent.class);

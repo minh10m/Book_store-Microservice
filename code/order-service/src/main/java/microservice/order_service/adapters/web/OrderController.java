@@ -60,9 +60,9 @@ class OrderController {
                 .orElseThrow(() -> new OrderNotFoundException(orderNumber));
     }
 
-    @PutMapping("/{orderNumber}/delivered")
-    void markOrderAsDelivered(@PathVariable(value = "orderNumber") String orderNumber) {
-        log.info("Marking order as delivered: {}", orderNumber);
-        orderService.markOrderAsDelivered(orderNumber);
+    @PutMapping("/{orderNumber}/paid")
+    void markOrderAsPaid(@PathVariable(value = "orderNumber") String orderNumber) {
+        log.info("Marking order as paid: {}", orderNumber);
+        orderService.markOrderAsPaid(orderNumber);
     }
 }

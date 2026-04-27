@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class PayPalController {
     private static final String SUCCESS_URL = "http://localhost:8989/payments/api/payments/paypal/success";
     private static final String CANCEL_URL = "http://localhost:8989/payments/api/payments/paypal/cancel";
+    private static final String WEB_APP_SUCCESS_URL = "http://localhost:8080/payment/success";
     private static final String WEB_APP_PRODUCTS_URL = "http://localhost:8080/products";
 
     private final PayPalService payPalService;
@@ -38,7 +39,7 @@ public class PayPalController {
             HttpServletResponse response)
             throws PayPalRESTException, IOException {
         payPalService.handleSuccess(transactionID, paymentId, payerId);
-        response.sendRedirect(WEB_APP_PRODUCTS_URL);
+        response.sendRedirect(WEB_APP_SUCCESS_URL);
     }
 
     @GetMapping("/cancel")

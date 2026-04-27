@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.CorsConfig
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -17,6 +18,8 @@ class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(c -> c.requestMatchers("/actuator/**", "/v3/api-docs/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/orders/*/paid")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
