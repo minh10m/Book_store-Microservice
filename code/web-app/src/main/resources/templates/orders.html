@@ -7,26 +7,61 @@
 
 <body>
 <div layout:fragment="content">
-  <div x-data="initData()">
-    <h2>Tất cả đơn hàng</h2>
-    <hr/>
-    <div class="pb-3">
-      <table class="table">
-        <thead>
-        <tr>
-          <th scope="col">Mã đơn hàng</th>
-          <th scope="col">Trạng thái</th>
-        </tr>
-        </thead>
-        <tbody>
-        <template x-for="order in orders">
+  <div x-data="initData()" class="animate-fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Lịch sử đơn hàng</h2>
+        <a href="/products" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-plus-lg me-1"></i> Mua thêm
+        </a>
+    </div>
+
+    <div class="card p-4">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
           <tr>
-            <td><a x-bind:href="'/orders/'+order.orderNumber" x-text="order.orderNumber">OrderNumber</a></td>
-            <td x-text="order.status">status</td>
+            <th scope="col">Mã đơn hàng</th>
+            <th scope="col">Ngày đặt</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col" class="text-end">Thao tác</th>
           </tr>
-        </template>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+          <template x-for="order in orders">
+            <tr>
+              <td>
+                <span class="text-primary fw-bold font-monospace" x-text="order.orderNumber">OrderNumber</span>
+              </td>
+              <td class="text-secondary small" x-text="'Hôm nay'">Date</td>
+              <td>
+                <span class="badge" 
+                      :class="{'bg-warning': order.status === 'IN_PROCESS', 'bg-success': order.status === 'PAID' || order.status === 'DELIVERED', 'bg-info': order.status === 'NEW'}"
+                      x-text="{
+                        'NEW': 'Mới',
+                        'IN_PROCESS': 'Đang chờ thanh toán',
+                        'PAID': 'Đã thanh toán',
+                        'DELIVERED': 'Đã thanh toán (Cũ)',
+                        'CANCELLED': 'Đã hủy',
+                        'ERROR': 'Lỗi'
+                      }[order.status] || order.status">status</span>
+              </td>
+              <td class="text-end">
+                <a x-bind:href="'/orders/'+order.orderNumber" class="btn btn-primary btn-sm px-3">
+                  Chi tiết
+                </a>
+              </td>
+            </tr>
+          </template>
+          <template x-if="orders.length === 0">
+              <tr>
+                  <td colspan="4" class="text-center py-5 text-secondary">
+                      Bạn chưa có đơn hàng nào.
+                  </td>
+              </tr>
+          </template>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
