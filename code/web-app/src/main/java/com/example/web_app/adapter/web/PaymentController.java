@@ -49,6 +49,7 @@ public class PaymentController {
             throw e;
         }
     }
+
     @GetMapping("/payment/success")
     public String paymentSuccess() {
         return "payment_success";

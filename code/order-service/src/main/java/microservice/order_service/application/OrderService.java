@@ -6,8 +6,6 @@ import microservice.order_service.adapters.persistent.OrderRepository;
 import microservice.order_service.adapters.web.dto.CreateOrderRequest;
 import microservice.order_service.adapters.web.dto.CreateOrderResponse;
 import microservice.order_service.adapters.web.dto.OrderCreatedEvent;
-import microservice.order_service.adapters.web.dto.OrderPaidEvent;
-import microservice.order_service.adapters.web.dto.OrderInProcessEvent;
 import microservice.order_service.adapters.web.dto.OrderDTO;
 import microservice.order_service.adapters.web.mapper.OrderMapper;
 import microservice.order_service.domain.OrderEntity;

@@ -2,7 +2,7 @@ name: 'bookstore-microservice-app'
 services:
   catalog-service:
     build: ../../catalog-service
-    image: minh1010/bookstore-catalog-service
+    image: bookstore-catalog-service
     container_name: catalog-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -19,7 +19,7 @@ services:
 
   order-service:
     build: ../../order-service
-    image: minh1010/bookstore-order-service
+    image: bookstore-order-service
     container_name: order-service
     env_file:
       - ./docker-compose.env
@@ -38,7 +38,7 @@ services:
 
   payment-service:
     build: ../../payment-service
-    image: minh1010/bookstore-payment-service
+    image: bookstore-payment-service
     container_name: payment-service
     env_file:
       - ./docker-compose.env
@@ -57,7 +57,7 @@ services:
 
   notification-service:
     build: ../../notification-service
-    image: minh1010/bookstore-notification-service
+    image: bookstore-notification-service
     container_name: notification-service
     env_file:
       - ./docker-compose.env
@@ -75,7 +75,7 @@ services:
 
   api-gateway:
     build: ../../api-gateway
-    image: minh1010/bookstore-api-gateway
+    image: bookstore-api-gateway
     container_name: api-gateway
     env_file:
       - ./docker-compose.env
@@ -93,7 +93,7 @@ services:
 
   web-app:
     build: ../../web-app
-    image: minh1010/bookstore-web-app
+    image: bookstore-web-app
     container_name: web-app
     env_file:
       - ./docker-compose.env

@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>21</java.version>
 		<spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
-		<dockerImageName>minh1010/bookstore-${project.artifactId}</dockerImageName>
+		<dockerImageName>bookstore-${project.artifactId}</dockerImageName>
 	</properties>
 	<dependencies>
 		<dependency>
