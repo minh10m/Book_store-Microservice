@@ -2,9 +2,9 @@ package microservice.order_service.application;
 
 import microservice.order_service.adapters.web.dto.OrderCancelledEvent;
 import microservice.order_service.adapters.web.dto.OrderCreatedEvent;
-import microservice.order_service.adapters.web.dto.OrderPaidEvent;
 import microservice.order_service.adapters.web.dto.OrderErrorEvent;
 import microservice.order_service.adapters.web.dto.OrderInProcessEvent;
+import microservice.order_service.adapters.web.dto.OrderPaidEvent;
 import microservice.order_service.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

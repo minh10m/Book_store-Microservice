@@ -6,9 +6,9 @@ import java.util.List;
 import microservice.order_service.adapters.persistent.OrderEventRepository;
 import microservice.order_service.adapters.web.dto.OrderCancelledEvent;
 import microservice.order_service.adapters.web.dto.OrderCreatedEvent;
-import microservice.order_service.adapters.web.dto.OrderPaidEvent;
-import microservice.order_service.adapters.web.dto.OrderInProcessEvent;
 import microservice.order_service.adapters.web.dto.OrderErrorEvent;
+import microservice.order_service.adapters.web.dto.OrderInProcessEvent;
+import microservice.order_service.adapters.web.dto.OrderPaidEvent;
 import microservice.order_service.domain.OrderEventEntity;
 import microservice.order_service.domain.model.OrderEventType;
 import org.slf4j.Logger;
@@ -103,8 +103,7 @@ public class OrderEventService {
                 orderEventPublisher.publish(orderCreatedEvent);
                 break;
             case ORDER_PAID:
-                OrderPaidEvent orderPaidEvent =
-                        fromJsonPayload(event.getPayload(), OrderPaidEvent.class);
+                OrderPaidEvent orderPaidEvent = fromJsonPayload(event.getPayload(), OrderPaidEvent.class);
                 orderEventPublisher.publish(orderPaidEvent);
                 break;
             case ORDER_CANCELLED:
