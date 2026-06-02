@@ -1,4 +1,4 @@
-name: 'bookstore-microservice-infra'
+name: 'bookstore-microservice'
 services:
 
   bookstore-rabbitmq:
