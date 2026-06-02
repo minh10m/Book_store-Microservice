@@ -1,9 +1,9 @@
-name: API Gateway
+name: Order Service
 
 on:
   push:
     paths:
-      - code/api-gateway/**
+      - code/order-service/**
     branches:
       - 'main'
   pull_request:
@@ -14,8 +14,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      working-directory: ./code/api-gateway
-      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/bookstore-api-gateway
+      working-directory: ./code/order-service
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/bookstore-order-service
     defaults:
       run:
         working-directory: ${{ env.working-directory }}

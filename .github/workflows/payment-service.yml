@@ -1,9 +1,9 @@
-name: API Gateway
+name: Payment Service
 
 on:
   push:
     paths:
-      - code/api-gateway/**
+      - code/payment-service/**
     branches:
       - 'main'
   pull_request:
@@ -14,8 +14,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      working-directory: ./code/api-gateway
-      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/bookstore-api-gateway
+      working-directory: ./code/payment-service
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/bookstore-payment-service
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
