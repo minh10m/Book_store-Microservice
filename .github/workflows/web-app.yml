@@ -43,6 +43,6 @@ jobs:
 
       - name: Build and Publish Docker Image
         run: |
-          ./mvnw spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ env.DOCKER_IMAGE_NAME }}:latest
+          ./mvnw spring-boot:build-image -DskipTests -DdockerImageName=${{ env.DOCKER_IMAGE_NAME }}:latest
           echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
           docker push ${{ env.DOCKER_IMAGE_NAME }}:latest
