@@ -8,6 +8,8 @@ The application consists of the following microservices:
 
 *   **`catalog-service`**: Manages book catalog (CRUD operations).
 *   **`order-service`**: Handles customer orders.
+*   **`cart-service`**: Manages user shopping carts.
+*   **`search-service`**: Advanced search functionality for books.
 *   **`notification-service`**: Listens to events (e.g., order placed) and sends notifications.
 *   **`api-gateway`**: Central entry point for routing requests to backend services.
 *   **`web-app`**: A server-side rendered frontend (Spring MVC/Thymeleaf) interacting with the microservices.
@@ -16,6 +18,8 @@ The application consists of the following microservices:
 
 *   **RabbitMQ**: Message broker for asynchronous communication between services.
 *   **Keycloak**: Identity and Access Management (running on port `9191`).
+*   **Redis**: In-memory data store used by Cart Service.
+*   **Elasticsearch**: Search and analytics engine used by Search Service.
 *   **MailHog**: Email testing tool (captures emails sent by notification service).
 *   **Prometheus**: Monitoring and alerting toolkit.
 *   **Grafana**: Visualization platform for metrics, logs, and traces.
@@ -88,6 +92,8 @@ docker compose -f code/deployment/docker-compose/infra.yml -f code/deployment/do
 *   **API Gateway**: Port `8989` (Swagger UI: `/swagger-ui.html`)
 *   **Catalog Service**: Port `8081`
 *   **Order Service**: Port `8082`
+*   **Cart Service**: Port `8084`
+*   **Search Service**: Port `8085`
 
 ## 📊 Monitoring & Testing
 
@@ -121,10 +127,12 @@ task format
 microservice-book-store/
 ├── code/
 │   ├── api-gateway/          # Gatekeeper for backend services
+│   ├── cart-service/         # Shopping cart domain
 │   ├── catalog-service/      # Book catalog domains
 │   ├── deployment/           # Docker compose and k8s configs
 │   ├── notification-service/ # Email/Notification handler
 │   ├── order-service/        # Order management domain
+│   ├── search-service/       # Book search domain
 │   ├── web-app/              # Frontend UI
 │   ├── Taskfile.yml          # Task runner definitions
 │   └── pom.xml               # Parent POM
