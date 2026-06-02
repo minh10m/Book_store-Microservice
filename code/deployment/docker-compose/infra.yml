@@ -1,5 +1,15 @@
-name: 'bookstore-microservice-infra'
+name: 'bookstore-microservice'
 services:
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: bookstore-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    env_file:
+      - ./docker-compose.env
+    networks:
+      - bookstore-network
+
 
   bookstore-rabbitmq:
     image: rabbitmq:4.0.4-management

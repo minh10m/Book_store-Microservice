@@ -1,4 +1,4 @@
-name: 'bookstore-microservice-app'
+name: 'bookstore-microservice'
 services:
   catalog-service:
     build: ../../catalog-service

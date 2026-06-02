@@ -2,6 +2,9 @@
 global:
   scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
 
+rule_files:
+  - "alerting_rules.yml"
+
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
@@ -39,3 +42,14 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['web-app:8080']
+  - job_name: 'cart-service'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['cart-service:8084']
+
+  - job_name: 'search-service'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['search-service:8085']

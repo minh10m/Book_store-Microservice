@@ -25,6 +25,7 @@ The application consists of the following microservices:
 *   **Grafana**: Visualization platform for metrics, logs, and traces.
 *   **Loki**: Log aggregation system.
 *   **Tempo**: Distributed tracing backend.
+*   **Cloudflare Tunnel**: Securely exposes local applications to the internet.
 *   **Maven**: Build automation tool.
 *   **Task**: Simple build tool/task runner.
 
@@ -86,6 +87,19 @@ task start
 docker compose -f code/deployment/docker-compose/infra.yml -f code/deployment/docker-compose/apps.yml up -d
 ```
 
+### 5. Exposing to the Internet (Cloudflare Tunnel)
+
+This project includes a **Cloudflare Tunnel** container inside `infra.yml` to securely expose the local application to the Internet without opening ports.
+
+1. Obtain a Tunnel Token from the [Cloudflare Zero Trust Dashboard](https://one.dash.cloudflare.com).
+2. Add your token to `code/deployment/docker-compose/docker-compose.env`:
+   ```env
+   TUNNEL_TOKEN=your_token_here
+   ```
+3. Add a Public Hostname in the Cloudflare Dashboard pointing to `http://web-app:8080`.
+4. Start the infrastructure (`task start_infra`).
+5. **Keycloak Fix**: To allow OAuth2 login via the public domain, open the Keycloak Admin UI (`http://localhost:9191/admin`), go to **Clients** > **bookstore-webapp**, and add `*` to **Valid redirect URIs** and **Web origins**. *(Note: `web-app` is already pre-configured with `server.forward-headers-strategy=framework` to generate HTTPS redirects).*
+
 ## 🌐 Applications
 
 *   **Web App**: Port `8080`
@@ -100,20 +114,28 @@ docker compose -f code/deployment/docker-compose/infra.yml -f code/deployment/do
 *   **Keycloak**: Port `9191` (Admin: `admin`/`admin1234`)
 *   **RabbitMQ Management**: Port `15672` (User: `guest`/`guest`)
 *   **MailHog**: Port `8025`
-*   **Grafana**: Port `3000` (User: `admin`/`admin123`)
+*   **Grafana**: Port `3000` (User: `admin`/`admin123`) - *Pre-configured with Spring Boot 3.x dashboard tailored for Docker Compose.*
 *   **Prometheus**: Port `9096`
 *   **Loki**: Port `3100`
 *   **Tempo**: Port `3200`
 
 ## 💻 Development
 
-### Code Formatting
-This project uses **Spotless** to enforce code formatting.
+### Running Tests
+To execute all unit and integration tests across all microservices, use the `test` task. This command automatically formats the code and then runs Maven's `verify` phase.
 
-**Check format:**
+**Using Task:**
 ```bash
 task test
 ```
+
+**Using Maven directly:**
+```bash
+./mvnw clean verify
+```
+
+### Code Formatting
+This project uses **Spotless** to enforce code formatting.
 
 **Apply format:**
 ```bash
