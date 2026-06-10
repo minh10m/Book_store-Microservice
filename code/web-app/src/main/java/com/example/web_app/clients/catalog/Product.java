@@ -2,4 +2,5 @@ package com.example.web_app.clients.catalog;
 
 import java.math.BigDecimal;
 
-public record Product(Long id, String code, String name, String description, String imageUrl, BigDecimal price) {}
+public record Product(
+        Long id, String code, String name, String description, String previewText, String imageUrl, BigDecimal price) {}

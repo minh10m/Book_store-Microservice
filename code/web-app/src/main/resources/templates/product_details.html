@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div layout:fragment="content">
+    <div th:x-data="|initData('${productCode}')|" class="pb-5">
+        
+        <!-- Loading State -->
+        <div x-show="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <template x-if="!loading && product">
+            <div class="row g-5 align-items-center animate-fade-in" x-cloak>
+                
+                <!-- Left Column: Image -->
+                <div class="col-lg-5 text-center">
+                    <div class="card p-3 border-0 bg-transparent">
+                        <img x-bind:src="product.imageUrl" class="img-fluid rounded shadow-lg object-fit-cover" alt="Book Cover" style="max-height: 500px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    </div>
+                </div>
+
+                <!-- Right Column: Details -->
+                <div class="col-lg-7">
+                    <div class="card p-5 glassmorphism-card shadow-lg border-0 h-100">
+                        <span class="badge bg-primary bg-opacity-25 text-primary mb-3 w-auto d-inline-block px-3 py-2 rounded-pill" style="max-width: fit-content;" x-text="product.code">Code</span>
+                        
+                        <h1 class="fw-bold mb-3 text-white display-5" x-text="product.name">Book Title</h1>
+                        
+                        <h2 class="text-primary fw-bold mb-4" x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)">$0.00</h2>
+                        
+                        <p class="text-secondary mb-5 lh-lg" style="font-size: 1.1rem;" x-text="product.description">
+                            Book description goes here...
+                        </p>
+
+                        <div class="d-flex gap-3 mb-4">
+                            <button class="btn btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm" 
+                                    :class="{'btn-success': addedToCart, 'btn-primary': !addedToCart}" 
+                                    @click="addToCart()">
+                                <i class="bi bi-cart-plus me-2" x-show="!addedToCart"></i>
+                                <i class="bi bi-check-circle me-2" x-show="addedToCart" x-cloak></i>
+                                <span x-text="addedToCart ? 'Đã thêm vào giỏ!' : 'Thêm vào giỏ hàng'"></span>
+                            </button>
+                            
+                            <a :href="'/products/' + productCode + '/preview'" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill fw-bold shadow-sm" x-show="product.previewText">
+                                <i class="bi bi-book-half me-2"></i> Đọc thử
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</div>
+
+<style layout:fragment="pageStyles">
+    .glassmorphism-card {
+        background: rgba(30, 41, 59, 0.6) !important;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+    [x-cloak] { display: none !important; }
+</style>
+
+<div layout:fragment="pageScripts">
+    <script src="/js/productDetails.js"></script>
+</div>
+</body>
+</html>
