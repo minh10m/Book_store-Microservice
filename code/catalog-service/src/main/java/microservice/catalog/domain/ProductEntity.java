@@ -28,6 +28,9 @@ public class ProductEntity {
 
     private String description;
 
+    @Column(name = "preview_text")
+    private String previewText;
+
     private String imageUrl;
 
     @NotNull(message = "Product price is required") @DecimalMin("0.1") @Column(nullable = false)
@@ -35,11 +38,19 @@ public class ProductEntity {
 
     public ProductEntity() {}
 
-    public ProductEntity(Long id, String code, String name, String description, String imageUrl, BigDecimal price) {
+    public ProductEntity(
+            Long id,
+            String code,
+            String name,
+            String description,
+            String previewText,
+            String imageUrl,
+            BigDecimal price) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.description = description;
+        this.previewText = previewText;
         this.imageUrl = imageUrl;
         this.price = price;
     }
@@ -74,6 +85,14 @@ public class ProductEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPreviewText() {
+        return previewText;
+    }
+
+    public void setPreviewText(String previewText) {
+        this.previewText = previewText;
     }
 
     public String getImageUrl() {

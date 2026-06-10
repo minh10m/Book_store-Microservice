@@ -10,6 +10,7 @@ public class ProductMapper {
                 productEntity.getCode(),
                 productEntity.getName(),
                 productEntity.getDescription(),
+                productEntity.getPreviewText(),
                 productEntity.getImageUrl(),
                 productEntity.getPrice());
     }

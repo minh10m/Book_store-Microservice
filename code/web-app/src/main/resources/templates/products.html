@@ -16,25 +16,29 @@
             <template x-for="product in products.data">
                 <div class="col">
                     <div class="card h-100 border-0 shadow-sm overflow-hidden product-card">
-                        <div class="position-relative overflow-hidden" style="height: 320px;">
-                            <img :src="product.imageUrl"
-                                 class="card-img-top w-100 h-100 object-fit-cover transition-transform"
-                                 alt="Product Image"
-                                 style="transition: transform 0.5s ease;"
-                                 @mouseenter="$el.style.transform = 'scale(1.1)'"
-                                 @mouseleave="$el.style.transform = 'scale(1)'"
-                            />
-                            <div class="position-absolute top-0 end-0 p-2">
-                                <span class="badge bg-primary shadow">NEW</span>
+                        <a :href="'/products/' + product.code" class="text-decoration-none text-light d-block">
+                            <div class="position-relative overflow-hidden" style="height: 320px;">
+                                <img :src="product.imageUrl"
+                                     class="card-img-top w-100 h-100 object-fit-cover transition-transform"
+                                     alt="Product Image"
+                                     style="transition: transform 0.5s ease;"
+                                     @mouseenter="$el.style.transform = 'scale(1.1)'"
+                                     @mouseleave="$el.style.transform = 'scale(1)'"
+                                />
+                                <div class="position-absolute top-0 end-0 p-2">
+                                    <span class="badge bg-primary shadow">NEW</span>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="card-body p-3">
-                            <h6 class="card-title fw-bold mb-2 text-truncate-2" 
-                                x-text="product.name" 
-                                :title="product.name">product.name</h6>
+    
+                            <div class="card-body p-3">
+                                <h6 class="card-title fw-bold mb-2 text-truncate-2" 
+                                    x-text="product.name" 
+                                    :title="product.name">product.name</h6>
+                            </div>
+                        </a>
+                        <div class="card-body px-3 py-0 mb-3">
                             <p class="h5 fw-bold text-primary mb-0"
-                               x-text="new Intl.NumberFormat('vi-VN').format(product.price) + ' đ'">product.price</p>
+                               x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)">product.price</p>
                         </div>
                         
                         <div class="card-footer bg-transparent border-0 p-3 pt-0">

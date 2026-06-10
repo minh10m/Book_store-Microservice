@@ -123,16 +123,12 @@ public class PayPalService {
         paymentTransactionRepository.save(transaction);
     }
 
-    private Payment buildPayment(BigDecimal totalVnd, String cancelUrl, String successUrl) {
-        // Convert VND to USD (PayPal doesn't support VND natively)
-        BigDecimal rate = new BigDecimal("25000");
-        BigDecimal totalUsd = totalVnd.divide(rate, 2, java.math.RoundingMode.HALF_UP);
-
-        log.info("Converting {} VND to {} USD for PayPal payment", totalVnd, totalUsd);
+    private Payment buildPayment(BigDecimal totalAmount, String cancelUrl, String successUrl) {
+        log.info("Processing PayPal payment for {} USD", totalAmount);
 
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(String.format("%.2f", totalUsd));
+        amount.setTotal(String.format("%.2f", totalAmount));
 
         Transaction transaction = new Transaction();
         transaction.setDescription("BookStore Payment");

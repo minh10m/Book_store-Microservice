@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,5 +37,24 @@ class ProductController {
     PagedResult<Product> products(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
         log.info("Fetching products for page: {}", page);
         return catalogService.getProducts(page);
+    }
+
+    @GetMapping("/products/{code}")
+    String showProductDetails(@PathVariable String code, Model model) {
+        model.addAttribute("productCode", code);
+        return "product_details";
+    }
+
+    @GetMapping("/products/{code}/preview")
+    String showProductPreview(@PathVariable String code, Model model) {
+        model.addAttribute("productCode", code);
+        return "product_preview";
+    }
+
+    @GetMapping("/api/products/{code}")
+    @ResponseBody
+    Product getProductByCode(@PathVariable String code) {
+        log.info("Fetching product details for code: {}", code);
+        return catalogService.getProductByCode(code).getBody();
     }
 }

@@ -53,7 +53,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 700m
+          memory: 1024m
 
   notification-service:
     build: ../../notification-service
@@ -101,6 +101,44 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     ports:
       - "8080:8080"
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  cart-service:
+    build: ../../cart-service
+    image: bookstore-cart-service
+    container_name: cart-service
+    env_file:
+      - ./docker-compose.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SWAGGER_API_GATEWAY_URL=http://api-gateway:8989/cart
+    ports:
+      - "8081:8084"
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  search-service:
+    build: ../../search-service
+    image: bookstore-search-service
+    container_name: search-service
+    env_file:
+      - ./docker-compose.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SWAGGER_API_GATEWAY_URL=http://api-gateway:8989/search
+    ports:
+      - "8085:8085"
     networks:
       - bookstore-network
     restart: unless-stopped
