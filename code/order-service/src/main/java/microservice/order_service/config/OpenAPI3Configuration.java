@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class OpenAPI3Configuration {
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
-    String issuerUri;
+    @Value("${REALM_URL}")
+    String realmUrl;
 
     @Value("${swagger.api-gateway-url}")
     String apiGatewayUrl;
@@ -42,8 +42,8 @@ class OpenAPI3Configuration {
                                         .type(SecurityScheme.Type.OAUTH2)
                                         .flows(new OAuthFlows()
                                                 .authorizationCode(new OAuthFlow()
-                                                        .authorizationUrl(issuerUri + "/protocol/openid-connect/auth")
-                                                        .tokenUrl(issuerUri + "/protocol/openid-connect/token")
+                                                        .authorizationUrl(realmUrl + "/protocol/openid-connect/auth")
+                                                        .tokenUrl(realmUrl + "/protocol/openid-connect/token")
                                                         .scopes(new Scopes().addString("openid", "openid scope"))))));
     }
 }

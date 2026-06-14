@@ -26,7 +26,6 @@ The application consists of the following microservices:
 *   **Grafana**: Visualization platform for metrics, logs, and traces.
 *   **Loki**: Log aggregation system.
 *   **Tempo**: Distributed tracing backend.
-*   **Cloudflare Tunnel**: Securely exposes local applications to the internet.
 *   **Maven**: Build automation tool.
 *   **Task**: Simple build tool/task runner.
 
@@ -98,26 +97,10 @@ All service configuration is managed via `code/deployment/docker-compose/docker-
 | `PUBLIC_URL` | `http://localhost:8989` | **Browser-accessible** URL — used as the post-logout redirect URI sent to Keycloak |
 | `OAUTH2_SERVER_URL` | `http://keycloak:9191` | Internal Keycloak URL for server-side calls (token, JWK, userinfo) |
 | `PUBLIC_OAUTH2_SERVER_URL` | `http://localhost:9191` | **Browser-accessible** Keycloak URL — used for the OAuth2 login redirect (authorization URI) |
-| `TUNNEL_TOKEN` | *(empty)* | Cloudflare Tunnel token for public internet exposure |
 
 > **Note**: `API_GATEWAY_URL` and `PUBLIC_URL` serve different purposes. `API_GATEWAY_URL` is the internal Docker hostname used for service-to-service calls. `PUBLIC_URL` is the address that the browser navigates to after logging out — it must be reachable by the user's browser.
 
-### 6. Exposing to the Internet (Cloudflare Tunnel)
 
-This project includes a **Cloudflare Tunnel** container inside `infra.yml` to securely expose the local application to the Internet without opening ports.
-
-1. Obtain a Tunnel Token from the [Cloudflare Zero Trust Dashboard](https://one.dash.cloudflare.com).
-2. Add your token to `code/deployment/docker-compose/docker-compose.env`:
-   ```env
-   TUNNEL_TOKEN=your_token_here
-   ```
-3. Set `PUBLIC_URL` to your public domain (e.g., `https://yourdomain.com`):
-   ```env
-   PUBLIC_URL=https://yourdomain.com
-   ```
-4. Add a Public Hostname in the Cloudflare Dashboard pointing to `http://api-gateway:8989`.
-5. Start the infrastructure (`task start_infra`).
-6. **Keycloak Fix**: To allow OAuth2 login via the public domain, open the Keycloak Admin UI (`http://localhost:9191/admin`), go to **Clients** > **bookstore-webapp**, and add your domain to **Valid redirect URIs**, **Valid post-logout redirect URIs**, and **Web origins**.
 
 ## 🌐 Applications
 

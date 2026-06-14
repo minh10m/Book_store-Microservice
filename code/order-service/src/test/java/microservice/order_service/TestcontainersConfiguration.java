@@ -53,8 +53,8 @@ class TestcontainersConfiguration {
         return (registry) -> {
             registry.add("orders.catalog-service-url", wiremockServer::getBaseUrl);
             registry.add(
-                    "spring.security.oauth2.resourceserver.jwt.issuer-uri",
-                    () -> keycloak.getAuthServerUrl() + "/realms/" + realmName);
+                    "spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
+                    () -> keycloak.getAuthServerUrl() + "/realms/" + realmName + "/protocol/openid-connect/certs");
         };
     }
 }

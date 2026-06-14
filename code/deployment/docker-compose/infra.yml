@@ -1,15 +1,5 @@
 name: 'bookstore-microservice'
 services:
-  cloudflare-tunnel:
-    image: cloudflare/cloudflared:latest
-    container_name: bookstore-tunnel
-    restart: unless-stopped
-    command: tunnel run
-    env_file:
-      - ./docker-compose.env
-    networks:
-      - bookstore-network
-
 
   bookstore-rabbitmq:
     image: rabbitmq:4.0.4-management
@@ -44,6 +34,8 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin1234
+      - KC_HOSTNAME_URL=http://localhost:9191
+      - KC_HOSTNAME_ADMIN_URL=http://localhost:9191
     ports:
       - "9191:9191"
     networks:

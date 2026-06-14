@@ -6,12 +6,12 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.restassured.RestAssured;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.keycloak.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -34,7 +34,7 @@ public abstract class AbstractIT {
     static final String PASSWORD = "siva1234";
 
     @Autowired
-    OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
+    KeycloakContainer keycloak;
 
     @LocalServerPort
     int port;
@@ -75,8 +75,7 @@ public abstract class AbstractIT {
         map.put(OAuth2Constants.USERNAME, singletonList(USERNAME));
         map.put(OAuth2Constants.PASSWORD, singletonList(PASSWORD));
 
-        String authServerUrl =
-                oAuth2ResourceServerProperties.getJwt().getIssuerUri() + "/protocol/openid-connect/token";
+        String authServerUrl = keycloak.getAuthServerUrl() + "/realms/bookstore/protocol/openid-connect/token";
 
         var request = new HttpEntity<>(map, httpHeaders);
         KeyCloakToken token = restTemplate.postForObject(authServerUrl, request, KeyCloakToken.class);
