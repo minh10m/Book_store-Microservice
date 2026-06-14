@@ -26,6 +26,7 @@
         <module>payment-service</module>
         <module>cart-service</module>
         <module>search-service</module>
+        <module>admin-web-app</module>
     </modules>
 
     <build>

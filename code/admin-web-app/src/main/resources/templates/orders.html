@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div layout:fragment="content">
+    <div th:x-data="initAdminOrdersData()" class="animate-fade-in pb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold text-light mb-0"><i class="bi bi-card-list me-2"></i>Quản lý Đơn Hàng</h2>
+        </div>
+
+        <div class="card border-0 shadow-lg" style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border-radius: 16px;">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0" style="background: transparent;">
+                        <thead style="background: rgba(15, 23, 42, 0.8);">
+                            <tr>
+                                <th class="border-0 px-4 py-3 rounded-top-left text-secondary fw-semibold">Mã đơn hàng</th>
+                                <th class="border-0 px-4 py-3 text-secondary fw-semibold">Trạng thái</th>
+                                <th class="border-0 px-4 py-3 text-secondary fw-semibold rounded-top-right text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loading State -->
+                            <tr x-show="loading">
+                                <td colspan="3" class="text-center py-5 border-0">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Empty State -->
+                            <tr x-show="!loading && (!orders || orders.length === 0)">
+                                <td colspan="3" class="text-center py-5 border-0 text-secondary">
+                                    <i class="bi bi-inbox fs-1 mb-2 d-block"></i>
+                                    <p>Không có đơn hàng nào</p>
+                                </td>
+                            </tr>
+
+                            <template x-for="order in orders" :key="order.orderNumber">
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.3s;">
+                                    <td class="px-4 py-3 align-middle text-info fw-bold" x-text="order.orderNumber"></td>
+                                    <td class="px-4 py-3 align-middle">
+                                        <span class="badge rounded-pill shadow-sm px-3 py-2 fw-medium" 
+                                              :class="{
+                                                'bg-warning text-dark': order.status === 'NEW',
+                                                'bg-info text-dark': order.status === 'IN_PROCESS',
+                                                'bg-success': order.status === 'DELIVERED' || order.status === 'PAID',
+                                                'bg-danger': order.status === 'CANCELLED' || order.status === 'ERROR'
+                                              }" 
+                                              x-text="order.status">
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 align-middle text-end">
+                                        <select class="form-select form-select-sm d-inline-block w-auto bg-dark text-white border-secondary rounded-pill me-2" 
+                                                style="box-shadow: none;"
+                                                @change="updateStatus(order.orderNumber, $event.target.value)">
+                                            <option value="" disabled selected>Đổi trạng thái</option>
+                                            <option value="NEW">NEW</option>
+                                            <option value="IN_PROCESS">IN_PROCESS</option>
+                                            <option value="DELIVERED">DELIVERED</option>
+                                            <option value="CANCELLED">CANCELLED</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .table-dark {
+        --bs-table-bg: transparent;
+        --bs-table-color: #f8fafc;
+        --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+        --bs-table-hover-color: #ffffff;
+    }
+    .rounded-top-left { border-top-left-radius: 12px; }
+    .rounded-top-right { border-top-right-radius: 12px; }
+</style>
+<div layout:fragment="pageScripts">
+    <script src="/js/admin_orders.js"></script>
+</div>
+</body>
+</html>

@@ -30,6 +30,9 @@ tasks:
       - "{{.MVNW}} -pl api-gateway spring-boot:build-image -DskipTests"
       - "{{.MVNW}} -pl web-app spring-boot:build-image -DskipTests"
       - "{{.MVNW}} -pl payment-service spring-boot:build-image -DskipTests"
+      - "{{.MVNW}} -pl search-service spring-boot:build-image -DskipTests"
+      - "{{.MVNW}} -pl cart-service spring-boot:build-image -DskipTests"
+      - "{{.MVNW}} -pl admin-web-app spring-boot:build-image -DskipTests"
 
   start_infra:
     cmds:
