@@ -56,4 +56,12 @@ class ClientsConfig {
                 .build();
         return factory.createClient(PaymentServiceClient.class);
     }
+
+    @Bean
+    com.example.web_app.clients.search.SearchServiceClient searchServiceClient(RestClient.Builder builder) {
+        RestClient restClient = builder.build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
+                .build();
+        return factory.createClient(com.example.web_app.clients.search.SearchServiceClient.class);
+    }
 }

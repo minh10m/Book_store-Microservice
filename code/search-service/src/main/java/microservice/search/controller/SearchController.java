@@ -23,6 +23,16 @@ public class SearchController {
         return ResponseEntity.ok(searchService.searchBooks(keyword));
     }
 
+    @GetMapping("/filter")
+    @Operation(summary = "Smart search with filters")
+    public ResponseEntity<List<BookDocument>> searchWithFilters(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) java.math.BigDecimal minPrice,
+            @RequestParam(required = false) java.math.BigDecimal maxPrice) {
+        return ResponseEntity.ok(searchService.searchWithFilters(keyword, category, minPrice, maxPrice));
+    }
+
     @GetMapping("/category")
     @Operation(summary = "Search books by category")
     public ResponseEntity<List<BookDocument>> searchByCategory(@RequestParam String category) {

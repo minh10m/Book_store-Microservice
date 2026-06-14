@@ -5,6 +5,7 @@ import microservice.catalog.adapters.config.ApplicationProperties;
 import microservice.catalog.adapters.persistent.ProductRepository;
 import microservice.catalog.adapters.web.dto.PagedResult;
 import microservice.catalog.adapters.web.dto.Product;
+import microservice.catalog.domain.ProductEntity;
 import microservice.catalog.adapters.web.mapper.ProductMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,5 +44,33 @@ public class ProductService {
 
     public Optional<Product> getProductByCode(String code) {
         return productRepository.findByCode(code).map(ProductMapper::toProduct);
+    }
+
+    public Product createProduct(Product product) {
+        ProductEntity entity = new ProductEntity(
+                null,
+                product.code(),
+                product.name(),
+                product.description(),
+                product.previewText(),
+                product.imageUrl(),
+                product.price()
+        );
+        return ProductMapper.toProduct(productRepository.save(entity));
+    }
+
+    public Optional<Product> updateProduct(String code, Product product) {
+        return productRepository.findByCode(code).map(existingEntity -> {
+            existingEntity.setName(product.name());
+            existingEntity.setDescription(product.description());
+            existingEntity.setPreviewText(product.previewText());
+            existingEntity.setImageUrl(product.imageUrl());
+            existingEntity.setPrice(product.price());
+            return ProductMapper.toProduct(productRepository.save(existingEntity));
+        });
+    }
+
+    public void deleteProduct(String code) {
+        productRepository.findByCode(code).ifPresent(productRepository::delete);
     }
 }
