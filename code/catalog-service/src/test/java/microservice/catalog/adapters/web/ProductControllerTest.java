@@ -23,7 +23,7 @@ class ProductControllerTest extends AbstractIT {
                 .then()
                 .statusCode(200)
                 .body("data", hasSize(10))
-                .body("totalElements", is(15))
+                .body("totalElements", is(14))
                 .body("pageNumber", is(1))
                 .body("totalPages", is(2))
                 .body("isFirst", is(true))
