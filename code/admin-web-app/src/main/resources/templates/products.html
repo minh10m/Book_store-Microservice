@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div layout:fragment="content">
+    <div th:x-data="|initAdminProductsData('${pageNo}')|" class="animate-fade-in pb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold text-light mb-0"><i class="bi bi-journal-album me-2"></i>Quản lý Sách</h2>
+            <a th:href="@{/products/new}" class="btn btn-primary fw-bold rounded-pill px-4 shadow-sm">
+                <i class="bi bi-plus-lg me-1"></i> Thêm Sách Mới
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-lg" style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border-radius: 16px;">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0" style="background: transparent;">
+                        <thead style="background: rgba(15, 23, 42, 0.8);">
+                            <tr>
+                                <th class="border-0 px-4 py-3 rounded-top-left text-secondary fw-semibold">Mã</th>
+                                <th class="border-0 px-4 py-3 text-secondary fw-semibold">Hình ảnh</th>
+                                <th class="border-0 px-4 py-3 text-secondary fw-semibold w-25">Tên sách</th>
+                                <th class="border-0 px-4 py-3 text-secondary fw-semibold">Giá (USD)</th>
+                                <th class="border-0 px-4 py-3 text-secondary fw-semibold rounded-top-right text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loading State -->
+                            <tr x-show="loading">
+                                <td colspan="5" class="text-center py-5 border-0">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Empty State -->
+                            <tr x-show="!loading && (!products || !products.data || products.data.length === 0)">
+                                <td colspan="5" class="text-center py-5 border-0 text-secondary">
+                                    <i class="bi bi-inbox fs-1 mb-2 d-block"></i>
+                                    <p>Không có dữ liệu</p>
+                                </td>
+                            </tr>
+
+                            <template x-for="product in products.data" :key="product.code">
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.3s;">
+                                    <td class="px-4 py-3 align-middle text-secondary fw-medium" x-text="product.code"></td>
+                                    <td class="px-4 py-3 align-middle">
+                                        <img :src="product.imageUrl || '/images/default-book.png'" alt="book" style="width: 50px; height: 70px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                                    </td>
+                                    <td class="px-4 py-3 align-middle fw-bold text-white" x-text="product.name"></td>
+                                    <td class="px-4 py-3 align-middle text-info fw-semibold" x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)"></td>
+                                    <td class="px-4 py-3 align-middle text-end">
+                                        <a :href="'/admin/products/' + product.code + '/edit'" class="btn btn-sm btn-outline-info rounded-pill px-3 fw-medium border-0 me-2" style="background: rgba(13, 202, 240, 0.1);">
+                                            <i class="bi bi-pencil-square"></i> Sửa
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium border-0" style="background: rgba(220, 53, 69, 0.1);" @click="deleteProduct(product.code)">
+                                            <i class="bi bi-trash"></i> Xóa
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 d-flex justify-content-end" x-show="!loading && products && products.data && products.data.length > 0">
+            <div th:replace="~{fragments/pagination :: pagination}"> </div>
+        </div>
+
+
+    </div>
+</div>
+<style>
+    .table-dark {
+        --bs-table-bg: transparent;
+        --bs-table-color: #f8fafc;
+        --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+        --bs-table-hover-color: #ffffff;
+    }
+    .rounded-top-left { border-top-left-radius: 12px; }
+    .rounded-top-right { border-top-right-radius: 12px; }
+</style>
+<div layout:fragment="pageScripts">
+    <script th:src="@{/js/admin_products.js}"></script>
+</div>
+</body>
+</html>

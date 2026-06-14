@@ -1,0 +1,6 @@
+package com.example.admin_web_app.clients.catalog;
+
+import java.math.BigDecimal;
+
+public record Product(
+        Long id, String code, String name, String description, String previewText, String imageUrl, BigDecimal price) {}

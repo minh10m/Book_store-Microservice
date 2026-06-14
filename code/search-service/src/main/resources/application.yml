@@ -1,6 +1,12 @@
 server:
   port: 8085
 
+logging:
+  level:
+    root: INFO
+    org.springframework.data.elasticsearch.client.WIRE: TRACE
+    org.springframework.data.elasticsearch.core: DEBUG
+
 spring:
   application:
     name: search-service

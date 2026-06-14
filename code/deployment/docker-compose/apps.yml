@@ -147,6 +147,24 @@ services:
         limits:
           memory: 700m
 
+  admin-web-app:
+    build: ../../admin-web-app
+    image: bookstore-admin-web-app
+    container_name: admin-web-app
+    env_file:
+      - ./docker-compose.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8086:8086"
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
 networks:
   bookstore-network:
     external: true

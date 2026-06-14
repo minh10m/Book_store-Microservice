@@ -1,0 +1,67 @@
+package com.example.admin_web_app.clients;
+
+import com.example.admin_web_app.clients.catalog.CatalogServiceClient;
+import com.example.admin_web_app.clients.orders.OrderServiceClient;
+import com.example.admin_web_app.clients.payments.PaymentServiceClient;
+import com.example.admin_web_app.config.ApplicationProperties;
+import java.time.Duration;
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
+import org.springframework.boot.web.client.RestClientCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+
+@Configuration
+class ClientsConfig {
+    private final ApplicationProperties properties;
+
+    ClientsConfig(ApplicationProperties properties) {
+        this.properties = properties;
+    }
+
+    @Bean
+    RestClientCustomizer restClientCustomizer() {
+        var requestFactory = ClientHttpRequestFactoryBuilder.simple()
+                .withCustomizer(c -> {
+                    c.setConnectTimeout(Duration.ofSeconds(5));
+                    c.setReadTimeout(Duration.ofSeconds(5));
+                })
+                .build();
+        return restClientBuilder ->
+                restClientBuilder.baseUrl(properties.apiGatewayUrl()).requestFactory(requestFactory);
+    }
+
+    @Bean
+    CatalogServiceClient catalogServiceClient(RestClient.Builder builder) {
+        RestClient restClient = builder.build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
+                .build();
+        return factory.createClient(CatalogServiceClient.class);
+    }
+
+    @Bean
+    OrderServiceClient orderServiceClient(RestClient.Builder builder) {
+        RestClient restClient = builder.build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
+                .build();
+        return factory.createClient(OrderServiceClient.class);
+    }
+
+    @Bean
+    PaymentServiceClient paymentServiceClient(RestClient.Builder builder) {
+        RestClient restClient = builder.build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
+                .build();
+        return factory.createClient(PaymentServiceClient.class);
+    }
+
+    @Bean
+    com.example.admin_web_app.clients.search.SearchServiceClient searchServiceClient(RestClient.Builder builder) {
+        RestClient restClient = builder.build();
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
+                .build();
+        return factory.createClient(com.example.admin_web_app.clients.search.SearchServiceClient.class);
+    }
+}

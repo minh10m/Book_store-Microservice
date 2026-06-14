@@ -3,6 +3,8 @@ package com.example.web_app.adapter.web;
 import com.example.web_app.clients.catalog.CatalogServiceClient;
 import com.example.web_app.clients.catalog.PagedResult;
 import com.example.web_app.clients.catalog.Product;
+import com.example.web_app.clients.search.SearchServiceClient;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,9 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 class ProductController {
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
     private final CatalogServiceClient catalogService;
+    private final SearchServiceClient searchService;
 
-    ProductController(CatalogServiceClient catalogService) {
+    ProductController(CatalogServiceClient catalogService, SearchServiceClient searchService) {
         this.catalogService = catalogService;
+        this.searchService = searchService;
     }
 
     @GetMapping
@@ -37,6 +41,30 @@ class ProductController {
     PagedResult<Product> products(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
         log.info("Fetching products for page: {}", page);
         return catalogService.getProducts(page);
+    }
+
+    @GetMapping("/api/products/search")
+    @ResponseBody
+    PagedResult<Product> searchProducts(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) java.math.BigDecimal minPrice,
+            @RequestParam(required = false) java.math.BigDecimal maxPrice) {
+        log.info("Searching products with filters");
+        var searchResults = searchService.searchWithFilters(keyword, category, minPrice, maxPrice);
+
+        List<Product> products = searchResults.stream()
+                .map(doc -> new Product(
+                        null,
+                        doc.code() != null ? doc.code() : doc.isbn(),
+                        doc.title(),
+                        "By " + doc.author(),
+                        null,
+                        doc.imageUrl(),
+                        doc.price()))
+                .toList();
+
+        return new PagedResult<>(products, products.size(), 1, 1, true, true, false, false);
     }
 
     @GetMapping("/products/{code}")

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Thanh toán đơn hàng</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container py-5 animate-fade-in">
+        <div class="card p-5 text-center mx-auto shadow-lg" style="max-width: 600px;">
+            <h1 class="mb-4 fw-bold display-6" style="background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Thanh toán an toàn
+            </h1>
+            <p class="text-secondary mb-5">Vui lòng hoàn tất thanh toán để chúng tôi có thể xử lý đơn hàng của bạn ngay lập tức.</p>
+
+            <div class="card p-4 mb-5 text-start border-0" style="background: rgba(255, 255, 255, 0.03);" x-data="paymentHandler()">
+                <div class="d-flex justify-content-between mb-3 border-bottom border-white border-opacity-10 pb-2">
+                    <span class="text-secondary">Mã đơn hàng:</span>
+                    <span class="fw-bold text-primary" th:text="${order.orderNumber}">#ORD-123</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3 border-bottom border-white border-opacity-10 pb-2">
+                    <span class="text-secondary">Khách hàng:</span>
+                    <span class="fw-medium text-light" th:text="${order.customer.name}">John Doe</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <span class="h5 mb-0 fw-bold text-secondary">Tổng cộng:</span>
+                    <h3 class="fw-bold text-primary mb-0">
+                        $<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="mt-2" x-data="paymentHandler()">
+                <button @click="payWithPayPal()" 
+                        class="btn btn-primary w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-3" 
+                        style="background: #ffc439; color: #003087; font-size: 1.2rem; border: none;"
+                        id="pay-button"
+                        :disabled="loading">
+                    <template x-if="!loading">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-paypal"></i>
+                            <span>Thanh toán với <b>PayPal</b></span>
+                        </div>
+                    </template>
+                    <span x-show="loading" class="spinner-border spinner-border-sm"></span>
+                </button>
+            </div>
+
+            <p class="mt-5 text-secondary small">
+                <i class="bi bi-shield-lock-fill me-1 text-success"></i> Giao dịch được mã hóa SSL 256-bit bảo mật tuyệt đối.
+            </p>
+            
+            <div id="error-message" class="alert alert-danger mt-3" style="display: none"></div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function paymentHandler() {
+            return {
+                loading: false,
+                orderNumber: /*[[${order.orderNumber}]]*/ '',
+                totalAmount: /*[[${order.totalAmount}]]*/ 0,
+                customerName: /*[[${order.customer.name}]]*/ '',
+
+                async payWithPayPal() {
+                    this.loading = true;
+                    try {
+                        const response = await fetch('/api/payments/paypal/create', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                amount: this.totalAmount,
+                                nameTransactor: this.customerName,
+                                orderNumber: this.orderNumber
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Payment creation failed');
+
+                        const data = await response.json();
+                        window.location.href = data.approvalUrl;
+                    } catch (error) {
+                        console.error(error);
+                        const errEl = document.getElementById('error-message');
+                        errEl.textContent = 'Đã có lỗi xảy ra. Vui lòng thử lại sau.';
+                        errEl.style.display = 'block';
+                        this.loading = false;
+                    }
+                }
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

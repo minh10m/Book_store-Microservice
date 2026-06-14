@@ -18,6 +18,9 @@ public class BookDocument {
     @Id
     private String id;
 
+    @Field(type = FieldType.Keyword)
+    private String code;
+
     @Field(type = FieldType.Text, analyzer = "standard")
     private String title;
 
@@ -32,4 +35,7 @@ public class BookDocument {
 
     @Field(type = FieldType.Keyword)
     private String category;
+
+    @Field(type = FieldType.Keyword)
+    private String imageUrl;
 }

@@ -99,4 +99,16 @@ public class OrderService {
             log.info("Order {} marked as PAID after payment", orderNumber);
         }
     }
+
+    public List<OrderSummary> findAllOrders() {
+        return orderRepository.findAll().stream()
+                .map(o -> new OrderSummary(o.getOrderNumber(), o.getStatus()))
+                .toList();
+    }
+
+    public void updateOrderStatus(String orderNumber, String statusStr) {
+        OrderStatus status = OrderStatus.valueOf(statusStr);
+        orderRepository.updateOrderStatus(orderNumber, status);
+        log.info("Order {} status updated to {}", orderNumber, status);
+    }
 }

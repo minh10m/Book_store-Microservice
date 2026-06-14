@@ -65,4 +65,16 @@ class OrderController {
         log.info("Marking order as paid: {}", orderNumber);
         orderService.markOrderAsPaid(orderNumber);
     }
+
+    @GetMapping("/admin")
+    List<OrderSummary> getAllOrders() {
+        log.info("Fetching all orders for admin");
+        return orderService.findAllOrders();
+    }
+
+    @PutMapping("/admin/{orderNumber}/status")
+    void updateOrderStatus(@PathVariable(value = "orderNumber") String orderNumber, @RequestBody String status) {
+        log.info("Updating order status for admin: {} -> {}", orderNumber, status);
+        orderService.updateOrderStatus(orderNumber, status);
+    }
 }
