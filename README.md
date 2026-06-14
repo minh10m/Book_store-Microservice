@@ -96,7 +96,8 @@ All service configuration is managed via `code/deployment/docker-compose/docker-
 |---|---|---|
 | `API_GATEWAY_URL` | `http://api-gateway:8989` | Internal Docker URL used by services to call the gateway |
 | `PUBLIC_URL` | `http://localhost:8989` | **Browser-accessible** URL — used as the post-logout redirect URI sent to Keycloak |
-| `OAUTH2_SERVER_URL` | `http://keycloak:9191` | Internal Keycloak URL for token validation |
+| `OAUTH2_SERVER_URL` | `http://keycloak:9191` | Internal Keycloak URL for server-side calls (token, JWK, userinfo) |
+| `PUBLIC_OAUTH2_SERVER_URL` | `http://localhost:9191` | **Browser-accessible** Keycloak URL — used for the OAuth2 login redirect (authorization URI) |
 | `TUNNEL_TOKEN` | *(empty)* | Cloudflare Tunnel token for public internet exposure |
 
 > **Note**: `API_GATEWAY_URL` and `PUBLIC_URL` serve different purposes. `API_GATEWAY_URL` is the internal Docker hostname used for service-to-service calls. `PUBLIC_URL` is the address that the browser navigates to after logging out — it must be reachable by the user's browser.
