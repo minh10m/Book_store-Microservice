@@ -14,7 +14,7 @@
             </div>
             <div class="text-end">
                 <span class="badge" 
-                      :class="{'bg-warning': orderDetails.status === 'IN_PROCESS', 'bg-success': orderDetails.status === 'PAID' || orderDetails.status === 'DELIVERED', 'bg-info': orderDetails.status === 'NEW'}"
+                      :class="{'bg-warning': orderDetails.status === 'IN_PROCESS', 'bg-success': orderDetails.status === 'PAID' || orderDetails.status === 'DELIVERED', 'bg-info': orderDetails.status === 'NEW', 'bg-danger': orderDetails.status === 'CANCELLED' || orderDetails.status === 'ERROR'}"
                       x-text="{
                         'NEW': 'Mới',
                         'IN_PROCESS': 'Đang chờ thanh toán',

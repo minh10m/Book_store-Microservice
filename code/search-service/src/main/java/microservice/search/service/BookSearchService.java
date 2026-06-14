@@ -21,10 +21,13 @@ public class BookSearchService {
     private final ElasticsearchOperations elasticsearchOperations;
 
     public BookDocument save(BookDocument book) {
-        return searchRepository.findByCode(book.getCode()).map(existing -> {
-            book.setId(existing.getId());
-            return searchRepository.save(book);
-        }).orElseGet(() -> searchRepository.save(book));
+        return searchRepository
+                .findByCode(book.getCode())
+                .map(existing -> {
+                    book.setId(existing.getId());
+                    return searchRepository.save(book);
+                })
+                .orElseGet(() -> searchRepository.save(book));
     }
 
     public List<BookDocument> searchBooks(String keyword) {

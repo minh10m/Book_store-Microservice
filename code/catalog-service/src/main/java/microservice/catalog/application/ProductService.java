@@ -5,8 +5,8 @@ import microservice.catalog.adapters.config.ApplicationProperties;
 import microservice.catalog.adapters.persistent.ProductRepository;
 import microservice.catalog.adapters.web.dto.PagedResult;
 import microservice.catalog.adapters.web.dto.Product;
-import microservice.catalog.domain.ProductEntity;
 import microservice.catalog.adapters.web.mapper.ProductMapper;
+import microservice.catalog.domain.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,8 +54,7 @@ public class ProductService {
                 product.description(),
                 product.previewText(),
                 product.imageUrl(),
-                product.price()
-        );
+                product.price());
         return ProductMapper.toProduct(productRepository.save(entity));
     }
 

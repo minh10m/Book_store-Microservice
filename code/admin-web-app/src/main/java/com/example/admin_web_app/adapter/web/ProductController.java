@@ -9,11 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,6 +71,18 @@ class ProductController {
         return new PagedResult<>(products, products.size(), 1, 1, true, true, false, false);
     }
 
+    @GetMapping("/products/new")
+    String showCreateProductPage(Model model) {
+        model.addAttribute("productCode", "");
+        return "product_form";
+    }
+
+    @GetMapping("/products/{code}/edit")
+    String showEditProductPage(@PathVariable String code, Model model) {
+        model.addAttribute("productCode", code);
+        return "product_form";
+    }
+
     @GetMapping("/products/{code}")
     String showProductDetails(@PathVariable String code, Model model) {
         model.addAttribute("productCode", code);
@@ -97,7 +109,14 @@ class ProductController {
         Product created = catalogService.createProduct(product).getBody();
         if (created != null) {
             searchService.indexBook(new SearchServiceClient.BookDocumentResponse(
-                    null, created.code(), created.name(), created.description(), null, created.price(), "Uncategorized", created.imageUrl()));
+                    null,
+                    created.code(),
+                    created.name(),
+                    created.description(),
+                    null,
+                    created.price(),
+                    "Uncategorized",
+                    created.imageUrl()));
         }
         return created;
     }
@@ -109,7 +128,14 @@ class ProductController {
         Product updated = catalogService.updateProduct(code, product).getBody();
         if (updated != null) {
             searchService.indexBook(new SearchServiceClient.BookDocumentResponse(
-                    null, updated.code(), updated.name(), updated.description(), null, updated.price(), "Uncategorized", updated.imageUrl()));
+                    null,
+                    updated.code(),
+                    updated.name(),
+                    updated.description(),
+                    null,
+                    updated.price(),
+                    "Uncategorized",
+                    updated.imageUrl()));
         }
         return updated;
     }

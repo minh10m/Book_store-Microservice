@@ -35,7 +35,7 @@
               <td class="text-secondary small" x-text="'Hôm nay'">Date</td>
               <td>
                 <span class="badge" 
-                      :class="{'bg-warning': order.status === 'IN_PROCESS', 'bg-success': order.status === 'PAID' || order.status === 'DELIVERED', 'bg-info': order.status === 'NEW'}"
+                      :class="{'bg-warning': order.status === 'IN_PROCESS', 'bg-success': order.status === 'PAID' || order.status === 'DELIVERED', 'bg-info': order.status === 'NEW', 'bg-danger': order.status === 'CANCELLED' || order.status === 'ERROR'}"
                       x-text="{
                         'NEW': 'Mới',
                         'IN_PROCESS': 'Đang chờ thanh toán',

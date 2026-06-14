@@ -9,9 +9,9 @@
     <div th:x-data="|initAdminProductsData('${pageNo}')|" class="animate-fade-in pb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-light mb-0"><i class="bi bi-journal-album me-2"></i>Quản lý Sách</h2>
-            <button class="btn btn-primary fw-bold rounded-pill px-4 shadow-sm" @click="openCreateModal()">
+            <a th:href="@{/products/new}" class="btn btn-primary fw-bold rounded-pill px-4 shadow-sm">
                 <i class="bi bi-plus-lg me-1"></i> Thêm Sách Mới
-            </button>
+            </a>
         </div>
 
         <div class="card border-0 shadow-lg" style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border-radius: 16px;">
@@ -52,9 +52,9 @@
                                     <td class="px-4 py-3 align-middle fw-bold text-white" x-text="product.name"></td>
                                     <td class="px-4 py-3 align-middle text-info fw-semibold" x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)"></td>
                                     <td class="px-4 py-3 align-middle text-end">
-                                        <button class="btn btn-sm btn-outline-info rounded-pill px-3 fw-medium border-0 me-2" style="background: rgba(13, 202, 240, 0.1);" @click="openEditModal(product)">
+                                        <a :href="'/admin/products/' + product.code + '/edit'" class="btn btn-sm btn-outline-info rounded-pill px-3 fw-medium border-0 me-2" style="background: rgba(13, 202, 240, 0.1);">
                                             <i class="bi bi-pencil-square"></i> Sửa
-                                        </button>
+                                        </a>
                                         <button class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium border-0" style="background: rgba(220, 53, 69, 0.1);" @click="deleteProduct(product.code)">
                                             <i class="bi bi-trash"></i> Xóa
                                         </button>
@@ -71,51 +71,7 @@
             <div th:replace="~{fragments/pagination :: pagination}"> </div>
         </div>
 
-        <!-- Product Modal -->
-        <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true" x-ref="productModal">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content border-0 shadow-lg" style="background: #1e293b; border-radius: 20px;">
-                    <div class="modal-header border-0 pb-0 pt-4 px-4">
-                        <h5 class="modal-title fw-bold text-white fs-4" x-text="isEditing ? 'Sửa Sách' : 'Thêm Sách Mới'"></h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-4">
-                        <form @submit.prevent="saveProduct">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label text-secondary fw-medium fs-sm">Mã sách</label>
-                                    <input type="text" class="form-control bg-dark border-0 text-white shadow-none" x-model="currentProduct.code" :disabled="isEditing" required placeholder="Ví dụ: P100">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-secondary fw-medium fs-sm">Tên sách</label>
-                                    <input type="text" class="form-control bg-dark border-0 text-white shadow-none" x-model="currentProduct.name" required placeholder="Tên sách">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-secondary fw-medium fs-sm">Giá (USD)</label>
-                                    <input type="number" step="0.01" class="form-control bg-dark border-0 text-white shadow-none" x-model="currentProduct.price" required placeholder="0.00">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-secondary fw-medium fs-sm">URL Hình ảnh</label>
-                                    <input type="url" class="form-control bg-dark border-0 text-white shadow-none" x-model="currentProduct.imageUrl" placeholder="https://...">
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label text-secondary fw-medium fs-sm">Tóm tắt ngắn</label>
-                                    <input type="text" class="form-control bg-dark border-0 text-white shadow-none" x-model="currentProduct.previewText" placeholder="Đoạn mô tả ngắn gọn...">
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label text-secondary fw-medium fs-sm">Mô tả chi tiết</label>
-                                    <textarea class="form-control bg-dark border-0 text-white shadow-none" rows="4" x-model="currentProduct.description" placeholder="Nhập mô tả sách..."></textarea>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-3 border-top border-secondary d-flex justify-content-end gap-2">
-                                <button type="button" class="btn text-secondary fw-medium" data-bs-dismiss="modal">Hủy</button>
-                                <button type="submit" class="btn btn-primary fw-bold rounded-pill px-4 shadow-sm" x-text="isSaving ? 'Đang lưu...' : 'Lưu lại'" :disabled="isSaving"></button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 <style>
@@ -129,7 +85,7 @@
     .rounded-top-right { border-top-right-radius: 12px; }
 </style>
 <div layout:fragment="pageScripts">
-    <script src="/js/admin_products.js"></script>
+    <script th:src="@{/js/admin_products.js}"></script>
 </div>
 </body>
 </html>

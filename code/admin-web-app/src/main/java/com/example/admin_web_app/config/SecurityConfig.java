@@ -23,12 +23,7 @@ class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(c -> c.requestMatchers(
-                                "/js/*",
-                                "/css/*",
-                                "/images/*",
-                                "/error",
-                                "/webjars/**")
+        http.authorizeHttpRequests(c -> c.requestMatchers("/js/*", "/css/*", "/images/*", "/error", "/webjars/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
@@ -44,6 +39,7 @@ class SecurityConfig {
     private LogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
                 new OidcClientInitiatedLogoutSuccessHandler(this.clientRegistrationRepository);
+
         oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
         return oidcLogoutSuccessHandler;
     }

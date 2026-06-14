@@ -24,5 +24,6 @@ public interface OrderServiceClient {
     List<OrderSummary> getAllOrders(@RequestHeader Map<String, ?> headers);
 
     @PutExchange("/orders/api/orders/admin/{orderNumber}/status")
-    void updateOrderStatus(@RequestHeader Map<String, ?> headers, @PathVariable String orderNumber, @RequestBody String status);
+    void updateOrderStatus(
+            @RequestHeader Map<String, ?> headers, @PathVariable String orderNumber, @RequestBody String status);
 }

@@ -12,6 +12,6 @@ public interface BookSearchRepository extends ElasticsearchRepository<BookDocume
     List<BookDocument> findByCategory(String category);
 
     void deleteByCode(String code);
-    
+
     java.util.Optional<BookDocument> findByCode(String code);
 }
